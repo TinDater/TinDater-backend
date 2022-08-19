@@ -8,3 +8,5 @@ const peopleRouter = require("./people.router");
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
 router.use("/people", peopleRouter);
+
+module.exports = router;
