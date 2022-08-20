@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // sequelize
-//   .sync({ force: false })
+//   .sync({ force: true })
 //   .then(() => {
 //     console.log("db connect seccess");
 //   })
