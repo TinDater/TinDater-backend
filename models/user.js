@@ -8,24 +8,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(
-        models.Like
-        //   , {
-        //   foreignKey: "userId",
-        //   sourceKey: "userId",
-        //   onUpdate: "cascade",
-        //   onDelete: "cascade",
-        // }
-      );
-      User.hasMany(
-        models.Dislike
-        //   , {
-        //   foreignKey: "userId",
-        //   sourceKey: "userId",
-        //   onUpdate: "cascade",
-        //   onDelete: "cascade",
-        // }
-      );
+      // User.hasMany(
+      //   models.Like
+      //   //   , {
+      //   //   foreignKey: "userId",
+      //   //   sourceKey: "userId",
+      //   //   onUpdate: "cascade",
+      //   //   onDelete: "cascade",
+      //   // }
+      // );
+      // User.hasMany(
+      //   models.Dislike
+      //   //   , {
+      //   //   foreignKey: "userId",
+      //   //   sourceKey: "userId",
+      //   //   onUpdate: "cascade",
+      //   //   onDelete: "cascade",
+      //   // }
+      // );
     }
   }
   User.init(
@@ -51,19 +51,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // User.associate = function (models) {
-  //   User.hasMany(models.Like, {
-  //     foreignKey: "userId",
-  //     sourceKey: "userId",
-  //     onUpdate: "cascade",
-  //     onDelete: "cascade",
-  //   });
-  //   User.hasMany(models.Dislike, {
-  //     foreignKey: "userId",
-  //     sourceKey: "userId",
-  //     onUpdate: "cascade",
-  //     onDelete: "cascade",
-  //   });
-  // };
+  User.associate = function (models) {
+    User.hasMany(models.Like, {
+      foreignKey: "userId",
+      sourceKey: "userId",
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    });
+    User.hasMany(models.Dislike, {
+      foreignKey: "userId",
+      sourceKey: "userId",
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    });
+  };
   return User;
 };
