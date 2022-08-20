@@ -5,6 +5,9 @@ const PeopleService = require("../services/people.service");
 module.exports = class PeopleController {
   peopleService = new PeopleService();
 
+  /**userId는 현재 로그인한 사용자.
+   *
+   */
   getSwipe = async (req, res, next) => {
     const { userId } = req.params;
     try {

@@ -5,8 +5,8 @@ module.exports = class PeopleService {
 
   getSwipe = async (userId) => {
     try {
-      const recommended = await this.peopleRepository.getComment(userId);
-      const people = await this.peopleRepository.getSwipe(recommended);
+      const recommended = await this.peopleRepository.getRecommend(userId);
+      const people = await this.peopleRepository.getSwipe(userId, recommended);
       return people;
     } catch (err) {
       console.error(err);
