@@ -41,6 +41,15 @@ class UserController {
 
     res.status(200).json({ data: updateMypageData });
   };
+
+  //내가 좋아요한 사람//user->people로 바꾸기
+  peopleIlike = async (req, res, next) => {
+    const { userId } = req.params;
+    //const { userId } = res.locals.userId;
+    const peopleIlikeData = await this.userService.peopleIlike(userId);
+
+    res.status(200).json({ data: peopleIlikeData });
+  };
 }
 
 module.exports = UserController;

@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      likedUserId: DataTypes.INTEGER,
+      likeUserId: DataTypes.INTEGER,
     },
     {
       sequelize,

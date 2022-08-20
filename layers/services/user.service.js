@@ -36,6 +36,13 @@ class UserService {
 
     return updateMypageData;
   };
+
+  //내가 좋아요한 사람//user->people로 바꾸기
+  peopleIlike = async (userId) => {
+    const peopleIlike = await this.userRepository.peopleIlike(userId);
+
+    return peopleIlike;
+  };
 }
 
 module.exports = UserService;

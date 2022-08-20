@@ -6,5 +6,6 @@ const userController = new UserController();
 
 userRouter.get("/:userId", userController.getMypage);
 userRouter.put("/:userId", userController.updateMypage);
+userRouter.get("/:userId/like", userController.peopleIlike);
 
 module.exports = userRouter;
