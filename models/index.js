@@ -1,8 +1,8 @@
 "use strict";
-
+require("express");
 const fs = require("fs");
 const path = require("path");
-const Sequelize = require("sequelize");
+const sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
@@ -40,7 +40,58 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+// db.User = require("./user.js");
+// db.Like = require("./like.js");
+// db.Dislike = require("./dislike.js");
+
+// db.sequelize = sequelize;
+
+// User.init(sequelize);
+// Like.init(sequelize);
+// Dislike.init(sequelize);
+
+// User.associate(db);
+// Like.associate(db);
+// Dislike.associate(db);
+////////
+
+// db.User.hasMany(db.Like, {
+//   foreignKey: "userId",
+//   sourceKey: "userId",
+//   onUpdate: "cascade",
+//   onDelete: "cascade",
+// });
+// db.User.hasMany(db.Dislike, {
+//   foreignKey: "userId",
+//   sourceKey: "userId",
+//   onUpdate: "cascade",
+//   onDelete: "cascade",
+// });
+// db.Like.belongsTo(db.User, {
+//   foreignKey: "userId",
+//   targetKey: "userId",
+//   onUpdate: "cascade",
+//   onDelete: "cascade",
+// });
+
+// db.Dislike.belongsTo(db.User, {
+//   foreignKey: "userId",
+//   targetKey: "userId",
+//   onUpdate: "cascade",
+//   onDelete: "cascade",
+// });
+
+// db.Note.hasMany(db.Like);
+// db.Like.belongsTo(db.Note, {
+//   foreignKey: "fk_note_id"
+// });
+// db.User.hasMany(db.Like, { as: "L" });
+// db.Like.belongsTo(db.User, {
+//   foreignKey: "fk_user_id",
+//   as: "userid"
+// });
+
+// db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
 
 module.exports = db;
