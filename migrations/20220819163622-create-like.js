@@ -16,7 +16,7 @@ module.exports = {
           key: "userid",
         },
       },
-      likedUserId: {
+      likeUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

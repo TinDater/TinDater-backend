@@ -8,15 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Like.belongsTo(
-        models.User
-        //   , {
-        //   foreignKey: "userId",
-        //   targetKey: "userId",
-        //   onUpdate: "cascade",
-        //   onDelete: "cascade",
-        // }
-      );
+      // Like.belongsTo(
+      //   models.User
+      //   , {
+      //   foreignKey: "userId",
+      //   targetKey: "userId",
+      //   onUpdate: "cascade",
+      //   onDelete: "cascade",
+      // }
+      //);
     }
   }
   Like.init(
@@ -34,13 +34,13 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Like",
     }
   );
-  // Like.associate = function (models) {
-  //   Like.belongsTo(models.User, {
-  //     foreignKey: "userId",
-  //     targetKey: "userId",
-  //     onUpdate: "cascade",
-  //     onDelete: "cascade",
-  //   });
-  // };
+  Like.associate = function (models) {
+    Like.belongsTo(models.User, {
+      foreignKey: "userId",
+      targetKey: "userId",
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    });
+  };
   return Like;
 };
