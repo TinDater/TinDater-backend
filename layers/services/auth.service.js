@@ -48,9 +48,6 @@ module.exports = class AuthService {
   };
 
   //로그인
-  //정확한 email, password를 입력시 return {token, success : true}
-  //그렇지 않으면  return {success : false, msg : "회원 정보가 일치하지 않습니다."}
-
   login = async (email, password, nickname, userId) => {
     const userData = await this.authRepository.loginUser(
       email,
@@ -63,7 +60,7 @@ module.exports = class AuthService {
     const token = jwt.sign(
       {
         userId: userData.loginUserData[0].userId,
-        nickname: userData.loginNicknameData.nickname,
+        nickname: userData.loginNicknameData,
       },
       env.SECRET_KEY,
       { expiresIn: "1h" }
@@ -125,21 +122,23 @@ module.exports = class AuthService {
     try {
       await schema.validateAsync({ nickname });
     } catch (e) {
+      console.log(e);
       {
+        // return { msg: "닉네임을 확인하세요.", success: false };
         return { msg: "닉네임을 확인하세요.", err: e, success: false };
       }
     }
 
     //중복 닉네임 확인 : 데이터베이스에 중복된 닉네임이 있는지 확인
-    checkDupNickname = async (nickname) => {
-      const checkDupNicknameData = await this.authRepository.checkDupNickname(
-        nickname
-      );
-      if (checkDupNicknameData) {
-        return { msg: "사용할 수 있는 닉네임입니다.", success: true };
-      } else return { msg: "이미 존재하는 닉네임입니다.", success: false };
-    };
+    //   checkDupNickname = async (nickname) => {
+    const checkDupNicknameData = await this.authRepository.checkDupNickname(
+      nickname
+    );
+    if (!checkDupNicknameData) {
+      return { msg: "사용할 수 있는 닉네임입니다.", success: true };
+    } else return { msg: "이미 존재하는 닉네임입니다.", success: false };
   };
+  //   };
 
   //비밀번호 유효성 검사
   checkPasswordEffectiveness = async (password) => {
