@@ -1,41 +1,41 @@
 const UserRepository = require("../repositories/user.repository");
 
 class UserService {
-    userRepository = new UserRepository();
+  userRepository = new UserRepository();
 
-    //마이 페이지 확인
-    getMypage = async (userId) => {
-        const getMypageData = await this.UserRepository.getMypage(userId);
+  //마이 페이지 확인
+  getMypage = async (userId) => {
+    const getMypageData = await this.userRepository.getMypage(userId);
 
-        return getMypageData;
-    }
+    if (!getMypageData) throw new Error("userId를 찾을 수 없습니다.");
 
-    //마이 페이지 수정
-    updateMypage = async (
-        userId,
-        email,
-        nickname,
-        age,
-        address,
-        gender,
-        imageUrl,
-        interests
-    ) => {
-        const updateMypageData = await this.UserRepository.updateMypage(
-                userId,
-                email,
-                nickname,
-                age,
-                address,
-                gender,
-                imageUrl,
-                interests
-            );
+    return getMypageData;
+  };
 
-        return updateMypageData; //interests를 어떻게 가공해서 줘야할지 고민필요
-    }
+  //마이 페이지 수정
+  updateMypage = async (
+    userId,
+    email,
+    nickname,
+    age,
+    address,
+    gender,
+    imageUrl,
+    interest
+  ) => {
+    const updateMypageData = await this.userRepository.updateMypage(
+      userId,
+      email,
+      nickname,
+      age,
+      address,
+      gender,
+      imageUrl,
+      interest
+    );
 
-
+    return updateMypageData;
+  };
 }
 
 module.exports = UserService;

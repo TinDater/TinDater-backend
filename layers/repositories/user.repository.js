@@ -1,15 +1,17 @@
-//const { User } = require("../../models");
+const res = require("express/lib/response");
+const { User } = require("../../models");
 
 class UserRepository {
   //마이 페이지 확인
   getMypage = async (userId) => {
     const getMypageData = await User.findOne({
+      raw: true,
       where: {
         userId,
       },
     });
 
-    return { getMypageData };
+    return getMypageData;
   };
 
   //마이 페이지 수정
@@ -21,8 +23,17 @@ class UserRepository {
     address,
     gender,
     imageUrl,
-    interests
+    interest
   ) => {
+    const findUserId = await User.findOne({
+      raw: true,
+      where: {
+        userId,
+      },
+    });
+
+    if (!findUserId) throw new Error("userId를 찾을 수 없습니다.");
+
     const updateMypageData = await User.update(
       {
         email,
@@ -31,9 +42,10 @@ class UserRepository {
         address,
         gender,
         imageUrl,
-        interests,
+        interest,
       },
       {
+        raw: true,
         where: {
           userId,
         },
