@@ -60,6 +60,7 @@ class UserRepository {
       where: { userId },
       include: [
         {
+          where: { userId: `${Like.likeUserId}` },
           model: User,
           //attributes: ["userId"],
         },
