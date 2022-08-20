@@ -83,6 +83,7 @@ module.exports = class AuthController {
       await this.authService.checkNicknameEffectiveness(nickname);
 
     return res.send({
+      status: 400,
       msg: checkNicknameEffectivenessData.msg,
       success: checkNicknameEffectivenessData.success,
     });

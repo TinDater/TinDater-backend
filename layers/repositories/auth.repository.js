@@ -40,7 +40,7 @@ module.exports = class Authrepository {
     }
     // console.log(loginUserData);
     const loginNicknameData = loginUserData.map((row) => row.nickname);
-    console.log("repo", loginNicknameData);
+    // console.log("repo", loginNicknameData);
     const loginData = { loginNicknameData, loginUserData };
     return loginData;
   };
