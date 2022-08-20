@@ -40,7 +40,7 @@ class UserService {
   //내가 좋아요한 사람//user->people로 바꾸기
   peopleIlike = async (userId) => {
     const peopleIlike = await this.userRepository.peopleIlike(userId);
-
+    console.log("222222");
     return peopleIlike;
   };
 }

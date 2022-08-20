@@ -26,7 +26,9 @@ class UserController {
       !imageUrl &&
       !interest
     )
-      throw new Error(400, "데이터 형식을 확인해주세요.");
+      return res
+        .status(400)
+        .json({ errorMessage: "데이터 형식을 확인해주세요." });
 
     const updateMypageData = await this.userService.updateMypage(
       userId,

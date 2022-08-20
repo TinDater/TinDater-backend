@@ -58,17 +58,21 @@ class UserRepository {
   peopleIlike = async (userId) => {
     //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
     const peopleIlike = await Like.findAll({
-      raw: true,
       where: {
         userId,
       },
+      attributes: ["likeUserId"],
+      raw: true,
     });
+    console.log(peopleIlike);
+    let userList = [];
 
-    //{}
-    //peopleIlike의 각 요소 userId를 User에서 찾아서 리스트로 담아줌
-    const peopleLikedList = [];
-
-    return peopleIlike;
+    for (const entity of peopleIlike) {
+      const userId = entity.likeUserId;
+      const userInfo = await User.findOne({ where: { userId }, raw: true });
+      userList.push(userInfo);
+    }
+    return userList;
   };
 }
 
