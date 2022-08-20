@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Like",
     }
   );
+
   Like.associate = function (models) {
     Like.belongsTo(models.User, {
       foreignKey: "userId",
