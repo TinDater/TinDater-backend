@@ -71,6 +71,12 @@ module.exports = class PeopleRepository {
       return err.message;
     }
   };
+  /**
+   * 이 사람에게 좋아요 누르기
+   * @param {*} userId
+   * @param {*} likeUserId
+   * @returns
+   */
   createLike = async (userId, likeUserId) => {
     try {
       const people = await Like.create({
@@ -83,6 +89,12 @@ module.exports = class PeopleRepository {
       return err.message;
     }
   };
+  /**이 사람에게 싫어요 누르기.
+   *
+   * @param {*} userId
+   * @param {*} likeUserId
+   * @returns
+   */
   createDislike = async (userId, likeUserId) => {
     try {
       const people = await Dislike.create({
