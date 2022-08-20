@@ -1,6 +1,6 @@
 const { User, Like } = require("../../models");
 
-class UserRepository {
+module.exports = class UserRepository {
   //마이 페이지 확인
   getMypage = async (userId) => {
     const getMypageData = await User.findOne({
@@ -11,6 +11,16 @@ class UserRepository {
     });
 
     return getMypageData;
+  };
+
+  existUserId = async (userId) => {
+    const existUserId = await User.findOne({
+      raw: true,
+      where: {
+        userId,
+      },
+    });
+    return existUserId;
   };
 
   //마이 페이지 수정
@@ -24,15 +34,6 @@ class UserRepository {
     imageUrl,
     interest
   ) => {
-    const findUserId = await User.findOne({
-      raw: true,
-      where: {
-        userId,
-      },
-    });
-
-    if (!findUserId) throw new Error("userId를 찾을 수 없습니다.");
-
     const updateMypageData = await User.update(
       {
         email,
@@ -56,7 +57,7 @@ class UserRepository {
 
   //내가 좋아요한 사람//user->people로 바꾸기
   peopleIlike = async (userId) => {
-    const peopleIlike = await Like.findAll({
+    /*     const peopleIlike = await Like.findAll({
       where: { userId },
       include: [
         {
@@ -68,24 +69,21 @@ class UserRepository {
     });
     console.log(peopleIlike);
     return peopleIlike;
-    //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
-    // const peopleIlike = await Like.findAll({
-    //   where: {
-    //     userId,
-    //   },
-    //   attributes: ["likeUserId"],
-    //   raw: true,
-    // });
-    // console.log(peopleIlike);
-    // let userList = [];
+    로그인한 유저의 userId가 좋아요한 likeUserId의 배열 */
+    const peopleIlike = await Like.findAll({
+      where: {
+        userId,
+      },
+      attributes: ["likeUserId"],
+      raw: true,
+    });
+    let userList = [];
 
-    // for (const entity of peopleIlike) {
-    //   const userId = entity.likeUserId;
-    //   const userInfo = await User.findOne({ where: { userId }, raw: true });
-    //   userList.push(userInfo);
-    // }
-    //return userList;
+    for (const entity of peopleIlike) {
+      const userId = entity.likeUserId;
+      const userInfo = await User.findOne({ where: { userId }, raw: true });
+      userList.push(userInfo);
+    }
+    return userList;
   };
-}
-
-module.exports = UserRepository;
+};

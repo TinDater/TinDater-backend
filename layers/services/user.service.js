@@ -7,7 +7,13 @@ class UserService {
   getMypage = async (userId) => {
     const getMypageData = await this.userRepository.getMypage(userId);
 
-    if (!getMypageData) throw new Error("userId를 찾을 수 없습니다.");
+    if (!getMypageData) {
+      return {
+        success: false,
+        status: 400,
+        message: "userId가 존재하지 않습니다.",
+      };
+    }
 
     return getMypageData;
   };
@@ -23,6 +29,16 @@ class UserService {
     imageUrl,
     interest
   ) => {
+    const existUserId = await this.userRepository.existUserId(userId);
+
+    if (!existUserId) {
+      return {
+        success: false,
+        status: 400,
+        message: "userId가 존재하지 않습니다.",
+      };
+    }
+
     const updateMypageData = await this.userRepository.updateMypage(
       userId,
       email,
@@ -34,13 +50,13 @@ class UserService {
       interest
     );
 
-    return updateMypageData;
+    return { success: true, updateMypageData };
   };
 
   //내가 좋아요한 사람//user->people로 바꾸기
   peopleIlike = async (userId) => {
     const peopleIlike = await this.userRepository.peopleIlike(userId);
-    console.log("222222");
+
     return peopleIlike;
   };
 }
