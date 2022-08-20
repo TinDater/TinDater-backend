@@ -6,19 +6,23 @@ const authController = new AuthController();
 
 // 회원가입
 router.post("/signup", authController.createUser);
-router.get("/signup", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "..", "signup.html"));
-});
+// router.get("/signup", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "..", "signup.html"));
+// });
+
 // 로그인
 router.post("/login", authController.signinUser);
 // router.get("/signin", (req, res) => {
 // res.sendFile(path.resolve(__dirname, "..", "signin.html"));
 
-// 로그아웃
-router.get("/logout", authController.logoutUser);
+// 이메일 중복 확인
+router.post("/email", authController.checkDupEmail);
 
-// 유저 수정
-router.put("/edit", authMiddleware, authController.updateUser);
+// 닉네임 중복 확인
+router.post("/nickname", authController.checkDupNickname);
+
+// 로그아웃
+router.get("/logout", authMiddleware, authController.logoutUser);
 
 // 회원 탈퇴
 router.delete("/delete", authMiddleware, authController.deleteUser);

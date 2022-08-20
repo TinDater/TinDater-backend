@@ -19,8 +19,6 @@ createUser = async (
   interests,
   imageUrl
 ) => {
-  //   password = this.changePasswordToHash(password);
-
   const createUserData = await this.authRepository.createUser({
     email,
     password,
