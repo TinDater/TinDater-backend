@@ -16,7 +16,7 @@ module.exports = {
           key: "userid",
         },
       },
-      dislikedUserId: {
+      dislikeUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

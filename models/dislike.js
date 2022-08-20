@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Dislike.belongsTo(models.User);
+      //Dislike.belongsTo(models.User);
     }
   }
   Dislike.init(
@@ -19,20 +19,20 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      dislikedUserId: DataTypes.INTEGER,
+      dislikeUserId: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Dislike",
     }
   );
-  // Dislike.associate = function (models) {
-  //   Dislike.belongsTo(models.User, {
-  //     foreignKey: "userId",
-  //     targetKey: "userId",
-  //     onUpdate: "cascade",
-  //     onDelete: "cascade",
-  //   });
-  // };
+  Dislike.associate = function (models) {
+    Dislike.belongsTo(models.User, {
+      foreignKey: "userId",
+      targetKey: "userId",
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    });
+  };
   return Dislike;
 };
