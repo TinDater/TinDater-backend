@@ -1,7 +1,12 @@
 const express = require("express");
-const router = express.Router();
+const peopleRouter = express.Router();
 
-const PeopleController = require("../controllers/people.controller");
+const PeopleController = require("../controllers/people.controller.js");
 const peopleController = new PeopleController();
 
-router.get("/", peopleController.getSwipe);
+peopleRouter.get("", peopleController.getSwipe);
+peopleRouter.post("/:userId/like", peopleController.likeSwipe);
+peopleRouter.post("/:userId/dislike", peopleController.dislikeSwipe);
+peopleRouter.get("/like", peopleController.likepeople);
+
+module.exports = peopleRouter;
