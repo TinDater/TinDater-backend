@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Dislike",
     }
   );
+
   Dislike.associate = function (models) {
     Dislike.belongsTo(models.User, {
       foreignKey: "userId",
