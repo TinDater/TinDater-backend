@@ -1,14 +1,48 @@
-const { User, Post, Comment, Like } = require("../models");
+const { User, Dislike, Like } = require("../../models");
 
-exports.modules = class Authrepository {
+module.exports = class Authrepository {
   //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
-  createUser = async (email, nickname, password) => {
+  createUser = async (
+    email,
+    password,
+    confirm,
+    nickname,
+    age,
+    address,
+    gender,
+    interest,
+    imageUrl
+  ) => {
     const createUserData = await User.create({
       email,
       password,
+      confirm,
       nickname,
+      age,
+      address,
+      gender,
+      interest,
+      imageUrl,
     });
     return createUserData;
+  };
+
+  loginUser = async (email, password, nickname, userId) => {
+    const loginUserData = await User.findAll({
+      where: { email, password },
+      raw: true,
+    });
+
+    if (!loginUserData) {
+      res.status(400).send({
+        errorMessage: "이메일 또는 패스워드가 잘못됐습니다.",
+      });
+    }
+    // console.log(loginUserData);
+    const loginNicknameData = loginUserData.map((row) => row.nickname);
+    console.log("repo", loginNicknameData);
+    const loginData = { loginNicknameData, loginUserData };
+    return loginData;
   };
 
   //유저 아이디로 해당 유저의 row 반환.
@@ -24,7 +58,6 @@ exports.modules = class Authrepository {
     const dupEmailData = await User.findOne({
       where: { email },
     });
-
     return dupEmailData;
   };
   //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
@@ -32,15 +65,18 @@ exports.modules = class Authrepository {
     const dupNicknameData = await User.findOne({
       where: { nickname },
     });
+    console.log(dupNicknameData);
     return dupNicknameData;
   };
+
   //email을 인자로 받아 해당되는 패스워드 반환
   findEmailToPassword = async (email) => {
-    const hashPassword = await User.findOne({
+    const findPassword = await User.findOne({
       where: { email },
     });
-    return hashPassword;
+    return findPassword;
   };
+
   //userId로 유저를 찾아 그 유저의 정보 변경.
   updateUserProfile = async (userId, password, nickname) => {
     const updataUserProfileData = await User.update(
@@ -53,19 +89,6 @@ exports.modules = class Authrepository {
       { where: { userId } }
     );
     return updataUserProfileData;
-  };
-  //userId 로 유저를 찾아 그 유저가 작성한 게시물을 반환
-  returnPostOfLoginUser = async (userId) => {
-    const PostsOfLoginUserData = await User.findOne({
-      include: [
-        {
-          model: Post,
-        },
-      ],
-      where: { userId },
-    });
-
-    return PostsOfLoginUserData.Posts;
   };
 
   //userId로 해당 유저를 삭제.
@@ -83,4 +106,4 @@ exports.modules = class Authrepository {
   };
 };
 
-module.exports = UserRepository;
+// module.exports = Authrepository;
