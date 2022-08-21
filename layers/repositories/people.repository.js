@@ -36,17 +36,19 @@ module.exports = class PeopleRepository {
       peopleset.delete(+userId);
       likeset.forEach((v) => peopleset.delete(v));
       dislikeset.forEach((v) => peopleset.delete(v));
-      //console.log(peopleset, peopleset.size);
+      console.log(peopleset, peopleset.size);
       const random = Math.floor(Math.random() * peopleset.size);
 
       const result = [...peopleset][random];
-      //console.log(random, result);
+      console.log(random, result);
+      if (result === undefined) return null;
       return result;
     } catch (err) {
       console.error(err);
       return err.message;
     }
   };
+
   /**
    * 해당 유저id로 스와이프. like와 join해서 이사람이 날 좋아요 눌렀는지도 얻어야함.
    * @param {*} userId
@@ -56,16 +58,12 @@ module.exports = class PeopleRepository {
     try {
       const people = await User.findOne({
         where: { userId: recommended },
-        include: [
-          {
-            model: Like,
-            where: {
-              [Op.and]: [{ userId: recommended }, { likeUserId: userId }],
-            },
-          },
-        ],
       });
-      return people;
+      const isLikeMe = await Like.findOne({
+        where: { userId: recommended, likeUserId: userId },
+      });
+      if (!isLikeMe) return { ...people.dataValues, likeMe: false };
+      else return { ...people.dataValues, likeMe: true };
     } catch (err) {
       console.error(err);
       return err.message;
@@ -95,16 +93,57 @@ module.exports = class PeopleRepository {
    * @param {*} likeUserId
    * @returns
    */
-  createDislike = async (userId, likeUserId) => {
+  createDislike = async (userId, dislikeUserId) => {
     try {
       const people = await Dislike.create({
         userId: userId,
-        likeUserId: likeUserId,
+        dislikeUserId: dislikeUserId,
       });
       return people;
     } catch (err) {
       console.error(err.message);
       return err.message;
     }
+  };
+  getLikePeople = async (userId) => {
+    try {
+      //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
+      const people = await Like.findAll({
+        where: {
+          userId,
+        },
+        attributes: ["likeUserId"],
+
+        raw: true,
+      });
+      console.log(people);
+
+      let userList = [];
+
+      for (let i in people) {
+        const likeUserId = people[i].likeUserId;
+        const userInfo = await User.findOne({
+          where: { userId: likeUserId },
+          raw: true,
+        });
+        const isLikeMe = await Like.findOne({
+          where: { userId: likeUserId, likeUserId: userId },
+        });
+        //userList.push(userInfo);
+        userList[i] = {
+          userId: userInfo.userId,
+          email: userInfo.email,
+          nickname: userInfo.nickname,
+          age: userInfo.age,
+          address: userInfo.address,
+          gender: userInfo.gender ? true : false,
+          imageUrl: userInfo.imageUrl,
+          interest: userInfo.interest.split(""),
+          likeMe: isLikeMe ? true : false,
+        };
+      }
+      console.log(userList);
+      return userList;
+    } catch (err) {}
   };
 };
