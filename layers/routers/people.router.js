@@ -10,8 +10,10 @@ peopleRouter.get("/like", peopleController.likePeople);
 //스와이프 페이지
 peopleRouter.get("/:userId", peopleController.getSwipe);
 
-//좋아요 (스와이프)
-peopleRouter.post("/:userId/like", peopleController.likeSwipe);
+peopleRouter
+  .route("/:userId/like")
+  .post(peopleController.likeSwipe) //좋아요 (스와이프)
+  .get(peopleController.likePeople); //내가 좋아요 누른 사람 목록
 
 //싫어요 (스와이프)
 peopleRouter.post("/:userId/dislike", peopleController.dislikeSwipe);
