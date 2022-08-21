@@ -36,7 +36,7 @@ module.exports = class PeopleController {
           likeUserId: joi.number().required(),
         })
         .validateAsync({ userId, likeUserId });
-      people = await this.peopleService.likeSwipe(userId, likeUserId);
+      const people = await this.peopleService.likeSwipe(userId, likeUserId);
       return res.json(people);
     } catch (err) {
       console.error(err.message);
@@ -46,16 +46,19 @@ module.exports = class PeopleController {
 
   dislikeSwipe = async (req, res, next) => {
     const { userId } = req.params;
-    const { likeUserId } = req.body;
+    const { dislikeUserId } = req.body;
 
     try {
       await joi
         .object({
           userId: joi.number().required(),
-          likeUserId: joi.number().required(),
+          dislikeUserId: joi.number().required(),
         })
-        .validateAsync({ userId, likeUserId });
-      people = await this.peopleService.dislikeSwipe(userId, likeUserId);
+        .validateAsync({ userId, dislikeUserId });
+      const people = await this.peopleService.dislikeSwipe(
+        userId,
+        dislikeUserId
+      );
       return res.json(people);
     } catch (err) {
       console.error(err.message);
@@ -64,8 +67,10 @@ module.exports = class PeopleController {
   };
 
   likePeople = async (req, res, next) => {
+    const { userId } = req.params;
     try {
-      people = await this.peopleService.likePeople();
+      const people = await this.peopleService.likePeople(userId);
+      return res.json(people);
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
