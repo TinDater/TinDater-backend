@@ -116,7 +116,6 @@ module.exports = class PeopleRepository {
 
         raw: true,
       });
-      console.log(people);
 
       let userList = [];
 
@@ -144,6 +143,9 @@ module.exports = class PeopleRepository {
       }
       console.log(userList);
       return userList;
-    } catch (err) {}
+    } catch (err) {
+      console.error(err.message);
+      return err.message;
+    }
   };
 };
