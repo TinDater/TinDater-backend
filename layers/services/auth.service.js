@@ -1,6 +1,6 @@
 const AuthMiddleware = require("../../middlewares/authmiddleware");
 const AuthRepository = require("../repositories/auth.repository");
-const Joi = require("Joi");
+const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const env = process.env;

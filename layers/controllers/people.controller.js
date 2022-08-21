@@ -18,7 +18,7 @@ module.exports = class PeopleController {
         .validateAsync({ userId });
       const people = await this.peopleService.getSwipe(userId);
 
-      return res.json(people);
+      return res.json({ success: true, ...people });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
@@ -37,10 +37,11 @@ module.exports = class PeopleController {
         })
         .validateAsync({ userId, likeUserId });
       const people = await this.peopleService.likeSwipe(userId, likeUserId);
-      return res.json(people);
+      if (people === null) return res.status(400).json({ success: false });
+      else return res.status(200).json({ success: true, ...people });
     } catch (err) {
       console.error(err.message);
-      return res.json(err.message);
+      return res.status(400).json(err.message);
     }
   };
 
@@ -59,7 +60,8 @@ module.exports = class PeopleController {
         userId,
         dislikeUserId
       );
-      return res.json(people);
+      if (people === null) return res.status(400).json({ success: false });
+      else return res.json({ success: true, ...people });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
@@ -70,7 +72,8 @@ module.exports = class PeopleController {
     const { userId } = req.params;
     try {
       const people = await this.peopleService.likePeople(userId);
-      return res.json(people);
+      if (people === null) return res.status(400).json({ success: false });
+      else return res.json(people);
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);

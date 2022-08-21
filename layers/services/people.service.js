@@ -25,7 +25,7 @@ module.exports = class PeopleService {
       return result;
     } catch (err) {
       console.error(err);
-      return err.message;
+      return { success: false, msg: err.message };
     }
   };
 
@@ -46,7 +46,7 @@ module.exports = class PeopleService {
       return people;
     } catch (err) {
       console.error(err);
-      return err.message;
+      return { success: false, msg: err.message };
     }
   };
 
@@ -59,8 +59,8 @@ module.exports = class PeopleService {
       const people = await this.getSwipe(userId);
       return people;
     } catch (err) {
-      console.error(err.message);
-      return err.message;
+      console.error(err);
+      return { success: false, msg: err.message };
     }
   };
 
@@ -70,8 +70,8 @@ module.exports = class PeopleService {
 
       return people;
     } catch (err) {
-      console.error(err.message);
-      return err.message;
+      console.error(err);
+      return { success: false, msg: err.message };
     }
   };
 };
