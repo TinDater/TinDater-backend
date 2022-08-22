@@ -57,19 +57,7 @@ module.exports = class UserRepository {
 
   //내가 좋아요한 사람//user->people로 바꾸기
   peopleIlike = async (userId) => {
-    /*     const peopleIlike = await Like.findAll({
-      where: { userId },
-      include: [
-        {
-          model: User,
-          //attributes: ["userId"],
-        },
-      ],
-      raw: true,
-    });
-    console.log(peopleIlike);
-    return peopleIlike;
-    로그인한 유저의 userId가 좋아요한 likeUserId의 배열 */
+    //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
     const peopleIlike = await Like.findAll({
       where: {
         userId,
@@ -77,6 +65,7 @@ module.exports = class UserRepository {
       attributes: ["likeUserId"],
       raw: true,
     });
+    console.log(peopleIlike);
     let userList = [];
 
     for (const entity of peopleIlike) {
