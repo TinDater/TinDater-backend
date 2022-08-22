@@ -35,13 +35,24 @@ module.exports = class Authrepository {
       raw: true,
     });
 
+    if (!loginUserData) {
+      res.status(400).send({
+        errorMessage: "이메일 또는 비밀번호를 확인해주세요.",
+      });
+      return loginUserData;
+    }
+
     const loginNicknameData = loginUserData.map((row) => row.nickname);
     const loginData = { loginNicknameData, loginUserData };
 
+    console.log("repo logindata", loginData);
+
     if (!loginData) {
-      res.status(400).send({
-        errorMessage: "이메일 또는 비밀번호가 잘못됐습니다.",
-      });
+      return {
+        status: 400,
+        msg: "이메일 또는 비밀번호가 잘못됐습니다.",
+      };
+    } else {
       return loginData;
     }
   };
@@ -59,6 +70,7 @@ module.exports = class Authrepository {
     const dupEmailData = await User.findOne({
       where: { email },
     });
+    console.log("dupEmailData", dupEmailData);
     return dupEmailData;
   };
 
@@ -67,7 +79,8 @@ module.exports = class Authrepository {
     const dupNicknameData = await User.findOne({
       where: { nickname },
     });
-    console.log(dupNicknameData);
+    console.log("dupnickname", dupNicknameData);
+
     return dupNicknameData;
   };
 
