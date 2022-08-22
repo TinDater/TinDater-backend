@@ -101,7 +101,7 @@ module.exports = class PeopleRepository {
       });
       return people;
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
       return err.message;
     }
   };
@@ -144,7 +144,7 @@ module.exports = class PeopleRepository {
       console.log(userList);
       return userList;
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
       return err.message;
     }
   };
