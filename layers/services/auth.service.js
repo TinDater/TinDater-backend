@@ -2,6 +2,7 @@ const AuthMiddleware = require("../../middlewares/authmiddleware");
 const AuthRepository = require("../repositories/auth.repository");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 require("dotenv").config();
 const env = process.env;
 
@@ -9,7 +10,7 @@ module.exports = class AuthService {
   authRepository = new AuthRepository();
 
   //회원가입 : email, password,,, 유저 데이터베이스에 추가
-  // return msg: {"회원가입을 축하드립니다!" , success : true}
+  //interest는 interest.join(" ")으로 [00010] 이렇게 붙여야 함
   createUser = async (
     email,
     password,
@@ -21,9 +22,56 @@ module.exports = class AuthService {
     interest,
     imageUrl
   ) => {
+    //비밀번호 유효성 검사
+    const passwordEffectiveness = Joi.object().keys({
+      password: Joi.string()
+        .min(6)
+        .max(19)
+        .pattern(
+          new RegExp(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+          )
+        )
+        .required(),
+    });
+    try {
+      await passwordEffectiveness.validateAsync({ password: password });
+    } catch (e) {
+      return {
+        err: e,
+        status: 400,
+        msg: "비밀번호를 확인하세요.",
+        success: false,
+      };
+    }
+    //닉네임 유효성 검사
+    // checkNicknameEffectiveness = async (nickname) => {
+    const checkNicknameEffectiveness = Joi.object().keys({
+      nickname: Joi.string()
+        .min(2)
+        .max(19)
+        .pattern(new RegExp(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]+$/))
+        .required(),
+    });
+
+    try {
+      await checkNicknameEffectiveness.validateAsync({ nickname });
+    } catch (e) {
+      console.log(e);
+      {
+        return { msg: "닉네임을 확인하세요.", err: e, success: false };
+      }
+    }
+
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password)
+      .digest("hex");
+
     const createUserData = await this.authRepository.createUser(
       email,
-      password,
+      hashPassword,
+      //   password,
       confirm,
       nickname,
       age,
@@ -33,7 +81,36 @@ module.exports = class AuthService {
       imageUrl
     );
 
-    if (createUserData.length !== 0) {
+    // const schema = Joi.object().keys({
+    //     password: Joi.string()
+    //         .min(6)
+    //         .max(19)
+    //         .pattern(
+    //             new RegExp(
+    //                 /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+    //             )
+    //         )
+    //         .required(),
+    // });
+    // try {
+    //     await schema.validateAsync({ password: password });
+    // } catch (e) {
+    //     return {
+    //         err: e,
+    //         status: 400,
+    //         msg: "비밀번호를 확인하세요.",
+    //         success: false,
+    //     };
+    // }
+    // if (password.search(email) > -1) {
+    //     return {
+    //         msg: "이메일에 비밀번호가 포함됩니다.",
+    //         success: false,
+    //     };
+    // }
+    //     return { success: true };
+    // };
+    if (createUserData) {
       return {
         status: 200,
         msg: "회원가입을 축하드립니다!",
@@ -49,17 +126,35 @@ module.exports = class AuthService {
 
   //로그인
   login = async (email, password, nickname, userId) => {
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password)
+      .digest("hex");
+
     const userData = await this.authRepository.loginUser(
       email,
-      password,
+      hashPassword,
+      //   password,
       nickname,
       userId
     );
-    console.log("service", userData);
+
+    // console.log("service", userData);
+
+    if (!userData) {
+      return {
+        status: 400,
+        sucess: false,
+        msg: "이메일 또는 비밀번호를 확인해주세요",
+      };
+    }
+
+    console.log(loginUserData);
 
     const token = jwt.sign(
       {
         userId: userData.loginUserData[0].userId,
+        // userId: userData.userId,
         nickname: userData.loginNicknameData,
       },
       env.ACCESS_SECRET,
@@ -98,10 +193,8 @@ module.exports = class AuthService {
       email: Joi.string().email().max(29).required(),
     });
     try {
-      // 검사시작
       await schema.validateAsync({ email });
     } catch (e) {
-      // 유효성 검사 에러
       return {
         msg: "이메일을 확인하세요.",
         success: false,
@@ -119,12 +212,12 @@ module.exports = class AuthService {
         .pattern(new RegExp(/^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]+$/))
         .required(),
     });
+
     try {
       await schema.validateAsync({ nickname });
     } catch (e) {
       console.log(e);
       {
-        // return { msg: "닉네임을 확인하세요.", success: false };
         return { msg: "닉네임을 확인하세요.", err: e, success: false };
       }
     }
@@ -137,41 +230,6 @@ module.exports = class AuthService {
     if (!checkDupNicknameData) {
       return { msg: "사용할 수 있는 닉네임입니다.", success: true };
     } else return { msg: "이미 존재하는 닉네임입니다.", success: false };
-  };
-  //   };
-
-  //비밀번호 유효성 검사
-  checkPasswordEffectiveness = async (password) => {
-    const schema = Joi.object().keys({
-      //   email: Joi.string().email().max(29).required(),
-      password: Joi.string()
-        .min(6)
-        .max(19)
-        .pattern(
-          new RegExp(
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
-          )
-        )
-        .required(),
-    });
-    try {
-      // 검사시작
-      await schema.validateAsync({ password: password });
-    } catch (e) {
-      // 유효성 검사 에러
-      return {
-        status: 400,
-        msg: "비밀번호를 확인하세요.",
-        success: false,
-      };
-    }
-    if (password.search(email) > -1) {
-      return {
-        msg: "이메일에 비밀번호가 포함됩니다.",
-        success: false,
-      };
-    }
-    return { success: true };
   };
 };
 

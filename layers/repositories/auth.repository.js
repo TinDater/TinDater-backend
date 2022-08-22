@@ -1,3 +1,4 @@
+const { condition } = require("sequelize");
 const { User, Dislike, Like } = require("../../models");
 
 module.exports = class Authrepository {
@@ -22,6 +23,7 @@ module.exports = class Authrepository {
       address,
       gender,
       interest: interest.join(""),
+      // interest,
       imageUrl,
     });
     return createUserData;
@@ -33,16 +35,15 @@ module.exports = class Authrepository {
       raw: true,
     });
 
-    if (!loginUserData) {
-      res.status(400).send({
-        errorMessage: "이메일 또는 패스워드가 잘못됐습니다.",
-      });
-    }
-    // console.log(loginUserData);
     const loginNicknameData = loginUserData.map((row) => row.nickname);
-    // console.log("repo", loginNicknameData);
     const loginData = { loginNicknameData, loginUserData };
-    return loginData;
+
+    if (!loginData) {
+      res.status(400).send({
+        errorMessage: "이메일 또는 비밀번호가 잘못됐습니다.",
+      });
+      return loginData;
+    }
   };
 
   //유저 아이디로 해당 유저의 row 반환.
@@ -60,6 +61,7 @@ module.exports = class Authrepository {
     });
     return dupEmailData;
   };
+
   //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
   checkDupNickname = async (nickname) => {
     const dupNicknameData = await User.findOne({
@@ -78,32 +80,31 @@ module.exports = class Authrepository {
   };
 
   //userId로 유저를 찾아 그 유저의 정보 변경.
-  updateUserProfile = async (userId, password, nickname) => {
-    const updataUserProfileData = await User.update(
-      {
-        password,
-        nickname,
-        MBTI,
-        profilePicture,
-      },
-      { where: { userId } }
-    );
-    return updataUserProfileData;
-  };
+  // updateUserProfile = async (userId, password, nickname) => {
+  //   const updataUserProfileData = await User.update(
+  //     {
+  //       password,
+  //       nickname,
+  //       imageUrl,
+  //     },
+  //     { where: { userId } }
+  //   );
+  //   return updataUserProfileData;
+  // };
 
   //userId로 해당 유저를 삭제.
-  deleteUser = async (userId) => {
-    await User.delete({
-      where: { userId },
-    });
-    return { success: true };
-  };
-  returnUserLikeOrNot = async (userId, postId) => {
-    const data = await Like.findOne({
-      where: { userId, postId },
-    });
-    return data;
-  };
+  // deleteUser = async (userId) => {
+  //   await User.delete({
+  //     where: { userId },
+  //   });
+  //   return { success: true };
+  // };
+  // returnUserLikeOrNot = async (userId, postId) => {
+  //   const data = await Like.findOne({
+  //     where: { userId, postId },
+  //   });
+  //   return data;
+  // };
 };
 
 // module.exports = Authrepository;
