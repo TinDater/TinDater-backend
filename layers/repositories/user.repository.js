@@ -1,6 +1,6 @@
 const { User, Like } = require("../../models");
 
-class UserRepository {
+module.exports = class UserRepository {
   //마이 페이지 확인
   getMypage = async (userId) => {
     const getMypageData = await User.findOne({
@@ -13,10 +13,29 @@ class UserRepository {
     return getMypageData;
   };
 
+  existUserId = async (userId) => {
+    const existUserId = await User.findOne({
+      raw: true,
+      where: {
+        userId,
+      },
+    });
+    return existUserId;
+  };
+
+  //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
+  checkDupNickname = async (nickname) => {
+    const dupNicknameData = await User.findOne({
+      where: { nickname },
+    });
+    return dupNicknameData;
+  };
+
   //마이 페이지 수정
   updateMypage = async (
     userId,
     email,
+    hashPassword,
     nickname,
     age,
     address,
@@ -24,24 +43,17 @@ class UserRepository {
     imageUrl,
     interest
   ) => {
-    const findUserId = await User.findOne({
-      raw: true,
-      where: {
-        userId,
-      },
-    });
-
-    if (!findUserId) throw new Error("userId를 찾을 수 없습니다.");
-
+    console.log(email);
     const updateMypageData = await User.update(
       {
-        email,
-        nickname,
-        age,
-        address,
-        gender,
-        imageUrl,
-        interest,
+        email: email,
+        password: hashPassword,
+        nickname: nickname,
+        age: age,
+        address: address,
+        gender: gender,
+        imageUrl: imageUrl,
+        interest: interest,
       },
       {
         raw: true,
@@ -74,6 +86,4 @@ class UserRepository {
     }
     return userList;
   };
-}
-
-module.exports = UserRepository;
+};
