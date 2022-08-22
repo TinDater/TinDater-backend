@@ -53,6 +53,7 @@ module.exports = class AuthController {
   //중복된 이메일 /유효성 검사
   checkDupEmail = async (req, res, next) => {
     const { email } = req.body;
+    console.log(email);
 
     //유효성 검사
     const checkEmailEffectivenessData =
@@ -66,7 +67,11 @@ module.exports = class AuthController {
     }
 
     //이메일 중복 검사
-    const checkDupEmailData = await this.authService.checkDupEmail(email);
+    // if (email)
+    const checkDupEmailData = await this.authService.checkEmailEffectiveness(
+      email
+    );
+    if (checkDupEmailData);
     return res.send({
       msg: checkDupEmailData.msg,
       success: checkDupEmailData.success,
@@ -91,8 +96,8 @@ module.exports = class AuthController {
   login = async (req, res, next) => {
     const { email, password } = req.body;
     const loginData = await this.authService.login(email, password);
-
-    if (loginData) {
+    console.log("con", loginData);
+    if (loginData.success == true) {
       return res.send({
         status: loginData.status,
         msg: loginData.msg,
