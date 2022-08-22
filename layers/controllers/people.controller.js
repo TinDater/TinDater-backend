@@ -38,7 +38,7 @@ module.exports = class PeopleController {
         .validateAsync({ userId, likeUserId });
       const people = await this.peopleService.likeSwipe(userId, likeUserId);
       if (people === null) return res.status(400).json({ success: false });
-      else return res.status(200).json({ success: true, ...people });
+      else return res.status(201).json({ success: true, data: { ...people } });
     } catch (err) {
       console.error(err.message);
       return res.status(400).json(err.message);
@@ -61,7 +61,7 @@ module.exports = class PeopleController {
         dislikeUserId
       );
       if (people === null) return res.status(400).json({ success: false });
-      else return res.json({ success: true, ...people });
+      else return res.status(201).json({ success: true, data: { ...people } });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
@@ -73,7 +73,7 @@ module.exports = class PeopleController {
     try {
       const people = await this.peopleService.likePeople(userId);
       if (people === null) return res.status(400).json({ success: false });
-      else return res.json(people);
+      else return res.status(201).json({ success: true, data: { ...people } });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
