@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       targetKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
+      constraints: false,
     });
   };
   return Like;

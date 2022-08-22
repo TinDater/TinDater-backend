@@ -57,12 +57,14 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
+      constraints: false,
     });
     User.hasMany(models.Dislike, {
       foreignKey: "userId",
       sourceKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
+      constraints: false,
     });
   };
   return User;
