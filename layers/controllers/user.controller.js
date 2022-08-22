@@ -7,14 +7,12 @@ class UserController {
   getMypage = async (req, res, next) => {
     const { userId } = req.params;
     const getMypageData = await this.userService.getMypage(userId);
-
-    if (getMypageData.success === true) {
-      console.log(getMypageData);
+    if (getMypageData.success !== false) {
       return res.status(200).json({ success: true, data: getMypageData });
     } else {
       return res
         .status(getMypageData.status)
-        .json({ success: false, msg: "마이페이지 확인에 실패하였습니다." });
+        .json({ success: false, msg: getMypageData.msg });
     }
   };
 
@@ -71,6 +69,7 @@ class UserController {
     );
 
     //success is true
+    console.log("--", updateMypageData.success);
     if (updateMypageData.success) {
       return res
         .status(200)
@@ -78,7 +77,7 @@ class UserController {
     } else {
       return res
         .status(updateMypageData.status)
-        .json({ success: false, msg: "업데이트가 실패하였습니다." });
+        .send({ success: false, msg: updateMypageData.msg });
     }
   };
 }
