@@ -35,16 +35,15 @@ module.exports = class Authrepository {
       raw: true,
     });
 
-    if (!loginUserData) {
-      res.status(400).send({
-        errorMessage: "이메일 또는 패스워드가 잘못됐습니다.",
-      });
-    }
-    // console.log(loginUserData);
     const loginNicknameData = loginUserData.map((row) => row.nickname);
-    // console.log("repo", loginNicknameData);
     const loginData = { loginNicknameData, loginUserData };
-    return loginData;
+
+    if (!loginData) {
+      res.status(400).send({
+        errorMessage: "이메일 또는 비밀번호가 잘못됐습니다.",
+      });
+      return loginData;
+    }
   };
 
   //유저 아이디로 해당 유저의 row 반환.
