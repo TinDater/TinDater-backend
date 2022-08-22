@@ -2,6 +2,7 @@ const AuthMiddleware = require("../../middlewares/authmiddleware");
 const AuthRepository = require("../repositories/auth.repository");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 require("dotenv").config();
 const env = process.env;
 
@@ -43,9 +44,16 @@ module.exports = class AuthService {
         success: false,
       };
     }
+
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password)
+      .digest("hex");
+
     const createUserData = await this.authRepository.createUser(
       email,
-      password,
+      hashPassword,
+      //   password,
       confirm,
       nickname,
       age,
@@ -109,9 +117,15 @@ module.exports = class AuthService {
 
   //로그인
   login = async (email, password, nickname, userId) => {
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password)
+      .digest("hex");
+
     const userData = await this.authRepository.loginUser(
       email,
-      password,
+      hashPassword,
+      //   password,
       nickname,
       userId
     );
