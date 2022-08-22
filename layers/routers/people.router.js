@@ -1,5 +1,6 @@
 const express = require("express");
 const peopleRouter = express.Router();
+const AuthController = require("../controllers/auth.controller");
 
 const PeopleController = require("../controllers/people.controller.js");
 const peopleController = new PeopleController();
