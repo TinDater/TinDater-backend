@@ -29,14 +29,14 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// sequelize
-//   .sync({ force: false })
-//   .then(() => {
-// console.log("db connect seccess");
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
+/* sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("db connect seccess");
+  })
+  .catch((err) => {
+    console.error(err);
+  }); */
 const indexRouter = require("./layers/routers");
 app.use("/api", indexRouter);
 
