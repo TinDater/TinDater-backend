@@ -1,5 +1,6 @@
 const UserRepository = require("../repositories/user.repository");
 const Joi = require("joi");
+const crypto = require("crypto");
 class UserService {
   userRepository = new UserRepository();
 
@@ -34,9 +35,9 @@ class UserService {
   //마이 페이지 수정
   updateMypage = async (
     userId,
-    email,
     password,
     confirm,
+    email,
     nickname,
     age,
     address,
@@ -45,7 +46,6 @@ class UserService {
     interest
   ) => {
     const existUserId = await this.userRepository.existUserId(userId);
-
     if (!existUserId) {
       return {
         success: false,
@@ -53,6 +53,7 @@ class UserService {
         message: "userId가 존재하지 않습니다.",
       };
     }
+
     //닉네임 유효성 검사
     const schema = Joi.object().keys({
       nickname: Joi.string()
@@ -105,12 +106,16 @@ class UserService {
         success: false,
       };
     }
+    console.log(email, "ser2");
+    const hashPassword = crypto
+      .createHash("sha512")
+      .update(password)
+      .digest("hex");
 
     const updateMypageData = await this.userRepository.updateMypage(
       userId,
       email,
-      password,
-      confirm,
+      hashPassword,
       nickname,
       age,
       address,

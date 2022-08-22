@@ -23,12 +23,19 @@ module.exports = class UserRepository {
     return existUserId;
   };
 
+  //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
+  checkDupNickname = async (nickname) => {
+    const dupNicknameData = await User.findOne({
+      where: { nickname },
+    });
+    return dupNicknameData;
+  };
+
   //마이 페이지 수정
   updateMypage = async (
     userId,
-    password,
-    confirm,
     email,
+    hashPassword,
     nickname,
     age,
     address,
@@ -36,17 +43,17 @@ module.exports = class UserRepository {
     imageUrl,
     interest
   ) => {
+    console.log(email);
     const updateMypageData = await User.update(
       {
-        email,
-        password,
-        confirm,
-        nickname,
-        age,
-        address,
-        gender,
-        imageUrl,
-        interest,
+        email: email,
+        password: hashPassword,
+        nickname: nickname,
+        age: age,
+        address: address,
+        gender: gender,
+        imageUrl: imageUrl,
+        interest: interest,
       },
       {
         raw: true,
@@ -57,14 +64,6 @@ module.exports = class UserRepository {
     );
 
     return updateMypageData;
-  };
-
-  //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
-  checkDupNickname = async (nickname) => {
-    const dupNicknameData = await User.findOne({
-      where: { nickname },
-    });
-    return dupNicknameData;
   };
 
   //내가 좋아요한 사람//user->people로 바꾸기

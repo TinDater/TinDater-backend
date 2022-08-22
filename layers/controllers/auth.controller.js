@@ -16,8 +16,8 @@ module.exports = class AuthController {
       imageUrl,
     } = req.body;
 
-    // const { authorization } = req.headers;
-    // if (authorization) {
+    // const { token } = req.headers;
+    // if (token) {
     //   res.status(400).send({
     //     errorMessage: "이미 로그인 되어 있습니다.",
     //   });

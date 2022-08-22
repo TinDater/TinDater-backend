@@ -45,7 +45,7 @@ class UserController {
         .status(400)
         .json({ errorMessage: "데이터 형식을 확인해주세요." });
 
-    //비밀번호 확인: 비밀번호와 비밀번호 확인란의 값이 같지 않다면 false 반환
+    //비밀번호 일치 확인
     if (password !== confirm) {
       res.status(400).send({
         msg: "패스워드가 패스워드 확인란과 동일하지 않습니다.",
@@ -53,7 +53,8 @@ class UserController {
       });
       return;
     }
-
+    console.log(email, "con");
+    console.log(nickname, "con2nick");
     const updateMypageData = await this.userService.updateMypage(
       userId,
       password,
