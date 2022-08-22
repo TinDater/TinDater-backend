@@ -17,8 +17,18 @@ module.exports = class PeopleController {
         })
         .validateAsync({ userId });
       const people = await this.peopleService.getSwipe(userId);
-
-      return res.json({ success: true, ...people });
+      if (people === null)
+        return res
+          .status(400)
+          .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
+      else
+        return res
+          .status(201)
+          .json({
+            success: true,
+            data: { ...people },
+            msg: "유저 정보 조회에 성공했습니다.",
+          });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
@@ -37,8 +47,18 @@ module.exports = class PeopleController {
         })
         .validateAsync({ userId, likeUserId });
       const people = await this.peopleService.likeSwipe(userId, likeUserId);
-      if (people === null) return res.status(400).json({ success: false });
-      else return res.status(201).json({ success: true, data: { ...people } });
+      if (people === null)
+        return res
+          .status(400)
+          .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
+      else
+        return res
+          .status(201)
+          .json({
+            success: true,
+            data: { ...people },
+            msg: "유저 정보 조회에 성공했습니다.",
+          });
     } catch (err) {
       console.error(err.message);
       return res.status(400).json(err.message);
@@ -60,8 +80,18 @@ module.exports = class PeopleController {
         userId,
         dislikeUserId
       );
-      if (people === null) return res.status(400).json({ success: false });
-      else return res.status(201).json({ success: true, data: { ...people } });
+      if (people === null)
+        return res
+          .status(400)
+          .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
+      else
+        return res
+          .status(201)
+          .json({
+            success: true,
+            data: { ...people },
+            msg: "유저 정보 조회에 성공했습니다.",
+          });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
