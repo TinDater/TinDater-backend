@@ -11,9 +11,12 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onUpdate: "cascade",
+        onDelete: "cascade",
         references: {
           model: "Users",
           key: "userid",
+          constraints: false,
         },
       },
       dislikeUserId: {
