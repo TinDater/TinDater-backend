@@ -25,8 +25,7 @@ module.exports = class AuthController {
 
     //비밀번호 확인: 비밀번호와 비밀번호 확인란의 값이 같지 않다면 false 반환
     if (password !== confirm) {
-      res.send({
-        status: 400,
+      res.status(400).send({
         msg: "패스워드가 패스워드 확인란과 동일하지 않습니다.",
         success: false,
       });
@@ -91,19 +90,18 @@ module.exports = class AuthController {
   //로그인
   login = async (req, res, next) => {
     const { email, password } = req.body;
-
     const loginData = await this.authService.login(email, password);
-    //   if (loginData.success) {
-    //       res.header({ authorization: `Bearer ${loginData.token}` });
 
     if (loginData) {
       return res.send({
-        msg: loginData.msg,
         status: loginData.status,
-        success: loginData.success,
-        token: loginData.token,
-        userId: loginData.userId,
-        nickname: loginData.nickname[0],
+        msg: loginData.msg,
+        data: {
+          success: loginData.success,
+          token: loginData.token,
+          userId: loginData.userId,
+          nickname: loginData.nickname[0],
+        },
       });
     } else
       return res.send({
