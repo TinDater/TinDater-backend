@@ -104,7 +104,7 @@ module.exports = class AuthController {
         },
       });
     } else
-      return res.send({
+      return res.json({
         success: loginData.success,
         msg: loginData.msg,
       });

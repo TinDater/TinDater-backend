@@ -6,10 +6,24 @@ class UserService {
   //마이 페이지 확인
   getMypage = async (userId) => {
     const getMypageData = await this.userRepository.getMypage(userId);
+    let result;
 
     if (!getMypageData) throw new Error("userId를 찾을 수 없습니다.");
+    else {
+      result = {
+        userId: getMypageData.userId,
+        email: getMypageData.email,
+        nickname: getMypageData.nickname,
+        age: getMypageData.age,
+        address: getMypageData.address,
+        gender: getMypageData.gender,
+        imageUrl: getMypageData.imageUrl,
+        interest: getMypageData.interest.split(""),
+        likeMe: getMypageData.likeMe,
+      };
+    }
 
-    return getMypageData;
+    return result;
   };
 
   //마이 페이지 수정
