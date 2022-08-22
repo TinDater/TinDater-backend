@@ -20,6 +20,18 @@ VALUES ("testbb@test.com", "1111!!bb", "펭수", 10, "남극", true, "img.png", 
 INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
 VALUES ("testcc@test.com", "1111!!cc", "미키마우스", 37, "강원도", false, "img.png", '11010');
 INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("minsun@test.com", "Aa123!", "해리포터", 18, "대전", false, "img.png", '11100');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("dumbledore@test.com", "Bb123!", "덤블도어", 82, "춘천", false, "img.png", '10110');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("Hermine@test.com", "Cc123!", "헤르미온느", 20, "순천", true, "img.png", '11111');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("test111@test.com", "1234qwer!", "전지투", 23, "인천", false, "img.png", '10110');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("test222@test.com", "1234qwer", "전지쓰리", 24, "캘거리", true, "img.png", '10111');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
+VALUES ("test333@test.com", "1234qwer", "전지포", 25, "폴란드", false, "img.png", '11110');
+INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
 VALUES ("test@test.com", "1234", "조권영", 20, "강원도", false, "zzz", '01100');
 INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
 VALUES ("test2@test.com", "1234", "오일남", 60, "서울", false, "zzz", '10100');
