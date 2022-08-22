@@ -123,8 +123,8 @@ module.exports = class AuthService {
         // userId: userData.userId,
         nickname: userData.loginNicknameData,
       },
-      env.SECRET_KEY,
-      { expiresIn: "1h" }
+      env.ACCESS_SECRET,
+      { expiresIn: env.ACCESS_OPTION_EXPIRESIN }
     );
 
     return {
