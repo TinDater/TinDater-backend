@@ -21,7 +21,6 @@ module.exports = class AuthController {
       res.status(400).send({
         errorMessage: "이미 로그인 되어 있습니다.",
       });
-      return;
     }
 
     //비밀번호 확인: 비밀번호와 비밀번호 확인란의 값이 같지 않다면 false 반환

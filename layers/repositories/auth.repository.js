@@ -21,7 +21,7 @@ module.exports = class Authrepository {
       age,
       address,
       gender,
-      interest,
+      interest: interest.join(""),
       imageUrl,
     });
     return createUserData;
