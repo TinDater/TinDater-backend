@@ -95,9 +95,9 @@ module.exports = class AuthController {
     const loginData = await this.authService.login(email, password);
     //   if (loginData.success) {
     //       res.header({ authorization: `Bearer ${loginData.token}` });
-
+    console.log(loginData);
     if (loginData) {
-      return res.send({
+      return res.json({
         msg: loginData.msg,
         status: loginData.status,
         success: loginData.success,
@@ -106,7 +106,7 @@ module.exports = class AuthController {
         nickname: loginData.nickname[0],
       });
     } else
-      return res.send({
+      return res.json({
         success: loginData.success,
         msg: loginData.msg,
       });
