@@ -1,3 +1,4 @@
+const { arrayBuffer } = require("stream/consumers");
 const UserService = require("../services/user.service");
 
 class UserController {

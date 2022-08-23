@@ -135,6 +135,16 @@ module.exports = class AuthController {
       return { success: false, msg: err.message };
     }
   };
+  checkToken = async (req, res, next) => {
+    const { userId, nickname } = res.locals;
+    try {
+      if (nickname) return res.status(200).json({ success: true, nickname });
+      else return res.status(400).json({ success: false, nickname: "" });
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ success: false, msg: err.message });
+    }
+  };
 };
 
 //   //로그아웃
