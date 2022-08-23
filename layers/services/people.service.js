@@ -28,6 +28,8 @@ module.exports = class PeopleService {
         imageUrl: people.imageUrl,
         interest: people.interest.split(""),
         likeMe: people.likeMe,
+        x: people.x,
+        y: people.y,
       };
       return { success: true, data: result };
     } catch (err) {
