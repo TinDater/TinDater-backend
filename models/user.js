@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "cascade",
       onDelete: "cascade",
       constraints: false,
+      as: "subjectUser",
     });
     User.hasMany(models.LikeAndDislike, {
       foreignKey: "targetUserId",
@@ -48,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "cascade",
       onDelete: "cascade",
       constraints: false,
+      as: "objectUser",
     });
   };
   return User;
