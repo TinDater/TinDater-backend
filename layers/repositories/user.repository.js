@@ -64,4 +64,12 @@ module.exports = class UserRepository {
 
     return updateMypageData;
   };
+
+  updateCoord = async (userId, x, y) => {
+    const updateCoordData = await User.update(
+      { x: x, y: y },
+      { where: { userId } }
+    );
+    return updateCoordData;
+  };
 };

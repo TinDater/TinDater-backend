@@ -127,6 +127,21 @@ class UserService {
 
     return { success: true, updateMypageData };
   };
+
+  updateCoord = async (userId, x, y) => {
+    const existUserId = await this.userRepository.existUserId(userId);
+    if (!existUserId) {
+      return {
+        success: false,
+        status: 400,
+        msg: "userId가 존재하지 않습니다.",
+      };
+    }
+
+    const updateCoordData = await this.userRepository.updateCoord(userId, x, y);
+
+    return { success: true, updateCoordData };
+  };
 }
 
 module.exports = UserService;
