@@ -8,7 +8,7 @@ module.exports = class PeopleController {
   /**userId는 현재 로그인한 사용자.
    *
    */
-  getSwipe = async (req, res, next) => {
+  getRecommend = async (req, res, next) => {
     const { userId } = req.params;
     try {
       await joi
@@ -16,22 +16,17 @@ module.exports = class PeopleController {
           userId: joi.number().required(),
         })
         .validateAsync({ userId });
-      const people = await this.peopleService.getSwipe(userId);
-      if (people === null)
-        return res
-          .status(400)
-          .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
+      const people = await this.peopleService.getRecommend(userId);
+      if (people.success === false) throw new Error(people.msg);
       else
-        return res
-          .status(201)
-          .json({
-            success: true,
-            data: { ...people },
-            msg: "유저 정보 조회에 성공했습니다.",
-          });
+        return res.status(201).json({
+          success: true,
+          data: { ...people.data },
+          msg: "유저 정보 조회에 성공했습니다.",
+        });
     } catch (err) {
       console.error(err.message);
-      return res.json(err.message);
+      return res.json({ success: false, msg: err.message });
     }
   };
 
@@ -47,18 +42,13 @@ module.exports = class PeopleController {
         })
         .validateAsync({ userId, likeUserId });
       const people = await this.peopleService.likeSwipe(userId, likeUserId);
-      if (people === null)
-        return res
-          .status(400)
-          .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
+      if (people.success === false) throw new Error(people.msg);
       else
-        return res
-          .status(201)
-          .json({
-            success: true,
-            data: { ...people },
-            msg: "유저 정보 조회에 성공했습니다.",
-          });
+        return res.status(201).json({
+          success: true,
+          data: { ...people.data },
+          msg: "유저 정보 조회에 성공했습니다.",
+        });
     } catch (err) {
       console.error(err.message);
       return res.status(400).json(err.message);
@@ -85,13 +75,11 @@ module.exports = class PeopleController {
           .status(400)
           .json({ success: false, msg: "유저 정보 조회에 실패했습니다." });
       else
-        return res
-          .status(201)
-          .json({
-            success: true,
-            data: { ...people },
-            msg: "유저 정보 조회에 성공했습니다.",
-          });
+        return res.status(201).json({
+          success: true,
+          data: { ...people.data },
+          msg: "유저 정보 조회에 성공했습니다.",
+        });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);
@@ -102,8 +90,12 @@ module.exports = class PeopleController {
     const { userId } = req.params;
     try {
       const people = await this.peopleService.likePeople(userId);
-      if (people === null) return res.status(400).json({ success: false });
-      else return res.status(201).json({ success: true, data: { ...people } });
+      if (people.success === false)
+        return res.status(400).json({ success: false, msg: people.msg });
+      else
+        return res
+          .status(201)
+          .json({ success: true, data: { ...people.data } });
     } catch (err) {
       console.error(err.message);
       return res.json(err.message);

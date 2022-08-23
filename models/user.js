@@ -44,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.BOOLEAN,
       imageUrl: DataTypes.STRING,
       interest: DataTypes.STRING,
+      x: DataTypes.FLOAT,
+      y: DataTypes.FLOAT,
     },
     {
       sequelize,
@@ -52,17 +54,19 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = function (models) {
-    User.hasMany(models.Like, {
+    User.hasMany(models.LikeAndDislike, {
       foreignKey: "userId",
       sourceKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
+      constraints: false,
     });
-    User.hasMany(models.Dislike, {
-      foreignKey: "userId",
+    User.hasMany(models.LikeAndDislike, {
+      foreignKey: "targetUserId",
       sourceKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
+      constraints: false,
     });
   };
   return User;
