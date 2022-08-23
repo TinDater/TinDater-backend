@@ -128,7 +128,7 @@ module.exports = class AuthService {
         msg: "이메일을 확인해주세요. ",
         success: false,
       };
-    console.log(isExistUserData);
+    // console.log(isExistUserData);
 
     const hashPassword = crypto
       .createHash("sha512")
@@ -151,12 +151,13 @@ module.exports = class AuthService {
         token,
         userId: isExistUserData.userId, //userData.loginUserIdData,
         nickname: isExistUserData.nickname, // userData.loginNicknameData,
+        imageUrl: isExistUserData.imageUrl,
       };
     } else {
       return {
         status: 400,
         sucess: false,
-        msg: "비밀번호가 틀렸습니다. ",
+        msg: "비밀번호를 확인해주세요. ",
       };
     }
   };
