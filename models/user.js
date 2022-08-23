@@ -7,26 +7,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // User.hasMany(
-      //   models.Like
-      //   //   , {
-      //   //   foreignKey: "userId",
-      //   //   sourceKey: "userId",
-      //   //   onUpdate: "cascade",
-      //   //   onDelete: "cascade",
-      //   // }
-      // );
-      // User.hasMany(
-      //   models.Dislike
-      //   //   , {
-      //   //   foreignKey: "userId",
-      //   //   sourceKey: "userId",
-      //   //   onUpdate: "cascade",
-      //   //   onDelete: "cascade",
-      //   // }
-      // );
-    }
+    static associate(models) {}
   }
   User.init(
     {
