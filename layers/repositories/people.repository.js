@@ -81,6 +81,12 @@ module.exports = class PeopleRepository {
     }
   };
 
+  /**
+   * 이미 좋아요, 싫어요 평가된 유저인지 확인.
+   * @param {*} userId
+   * @param {*} targetUserId
+   * @returns
+   */
   getIsEstimated = async (userId, targetUserId) => {
     const isEstimated = await LikeAndDislike.findOne({
       where: { userId, targetUserId },
@@ -162,6 +168,8 @@ module.exports = class PeopleRepository {
           imageUrl: userInfo.imageUrl,
           interest: userInfo.interest.split(""),
           likeMe: isLikeMe.isLikeMe,
+          x: userInfo.x,
+          y: userInfo.y,
         };
       }
       console.log(userList);
