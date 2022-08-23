@@ -8,12 +8,11 @@ class UserService {
   getMypage = async (userId) => {
     const getMypageData = await this.userRepository.getMypage(userId);
     let result;
-
     if (!getMypageData) {
       return {
         success: false,
         status: 400,
-        message: "userId가 존재하지 않습니다.",
+        msg: "userId가 존재하지 않습니다.",
       };
     } else {
       result = {
@@ -25,6 +24,8 @@ class UserService {
         gender: getMypageData.gender,
         imageUrl: getMypageData.imageUrl,
         interest: getMypageData.interest.split(""),
+        x: getMypageData.x,
+        y: getMypageData.y,
         likeMe: getMypageData.likeMe,
       };
     }
@@ -50,7 +51,7 @@ class UserService {
       return {
         success: false,
         status: 400,
-        message: "userId가 존재하지 않습니다.",
+        msg: "userId가 존재하지 않습니다.",
       };
     }
 
@@ -106,7 +107,7 @@ class UserService {
         success: false,
       };
     }
-    console.log(email, "ser2");
+
     const hashPassword = crypto
       .createHash("sha512")
       .update(password)
@@ -125,13 +126,6 @@ class UserService {
     );
 
     return { success: true, updateMypageData };
-  };
-
-  //내가 좋아요한 사람//user->people로 바꾸기
-  peopleIlike = async (userId) => {
-    const peopleIlike = await this.userRepository.peopleIlike(userId);
-
-    return peopleIlike;
   };
 }
 

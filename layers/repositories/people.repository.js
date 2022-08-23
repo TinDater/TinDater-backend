@@ -1,4 +1,4 @@
-const { User, Like, Dislike } = require("../../models");
+const { User, LikeAndDislike } = require("../../models");
 const peopleRouter = require("../routers/people.router");
 const { Op } = require("sequelize");
 
@@ -8,39 +8,30 @@ module.exports = class PeopleRepository {
    * @param {*} userId
    * @returns
    */
-  getRecommend = async (userId) => {
+  RecommendOne = async (userId) => {
     try {
       const people = await User.findAll({
         attributes: ["userId"],
         raw: true,
       });
-      let peopleset = new Set();
-      people.map((data) => peopleset.add(data.userId));
+      let peopleSet = new Set();
+      people.map((data) => peopleSet.add(data.userId));
 
-      const likepeople = await Like.findAll({
-        attributes: ["likeUserId"],
+      const ignoredPeople = await LikeAndDislike.findAll({
+        attributes: ["targetUserId"],
         where: { userId: userId },
         raw: true,
       });
-      let likeset = new Set();
-      likepeople.map((data) => likeset.add(data.likeUserId));
+      let ignoredSet = new Set();
+      ignoredPeople.map((data) => ignoredSet.add(data.targetUserId));
 
-      const dislikepeople = await Dislike.findAll({
-        attributes: ["dislikeUserId"],
-        where: { userId: userId },
-        raw: true,
-      });
-      let dislikeset = new Set();
-      dislikepeople.map((data) => dislikeset.add(data.dislikeUserId));
+      peopleSet.delete(+userId);
+      ignoredSet.forEach((v) => peopleSet.delete(v));
+      //console.log(peopleSet, peopleSet.size);
+      const random = Math.floor(Math.random() * peopleSet.size);
 
-      peopleset.delete(+userId);
-      likeset.forEach((v) => peopleset.delete(v));
-      dislikeset.forEach((v) => peopleset.delete(v));
-      console.log(peopleset, peopleset.size);
-      const random = Math.floor(Math.random() * peopleset.size);
-
-      const result = [...peopleset][random];
-      console.log(random, result);
+      const result = [...peopleSet][random];
+      //console.log(random, result);
       if (result === undefined) return null;
       return result;
     } catch (err) {
@@ -50,24 +41,59 @@ module.exports = class PeopleRepository {
   };
 
   /**
+   *
+   * @param {*} userId
+   * @param {*} recommended
+   * @returns
+   */
+  getIsLikeMe = async (userId, recommended) => {
+    try {
+      const isLikeMe = await LikeAndDislike.findOne({
+        where: { userId: recommended, targetUserId: userId, isLike: true },
+      });
+      return { success: true, isLikeMe: isLikeMe ? true : false };
+    } catch (err) {
+      console.error(err);
+      return { success: false, msg: err.message };
+    }
+  };
+  /**
    * 해당 유저id로 스와이프. like와 join해서 이사람이 날 좋아요 눌렀는지도 얻어야함.
    * @param {*} userId
    * @returns
    */
-  getSwipe = async (userId, recommended) => {
+  getRecommend = async (userId, recommended) => {
     try {
       const people = await User.findOne({
         where: { userId: recommended },
       });
-      const isLikeMe = await Like.findOne({
-        where: { userId: recommended, likeUserId: userId },
-      });
-      if (!isLikeMe) return { ...people.dataValues, likeMe: false };
-      else return { ...people.dataValues, likeMe: true };
+      console.log(people);
+      const isLikeMe = await this.getIsLikeMe(userId, recommended);
+      if (isLikeMe.success === true)
+        return {
+          success: true,
+          ...people.dataValues,
+          likeMe: isLikeMe.isLikeMe,
+        };
+      else throw new Error(isLikeMe.msg);
     } catch (err) {
       console.error(err);
-      return err.message;
+      return { success: false, msg: err.message };
     }
+  };
+
+  /**
+   * 이미 좋아요, 싫어요 평가된 유저인지 확인.
+   * @param {*} userId
+   * @param {*} targetUserId
+   * @returns
+   */
+  getIsEstimated = async (userId, targetUserId) => {
+    const isEstimated = await LikeAndDislike.findOne({
+      where: { userId, targetUserId },
+    });
+    if (isEstimated) return true;
+    else return false;
   };
   /**
    * 이 사람에게 좋아요 누르기
@@ -77,10 +103,13 @@ module.exports = class PeopleRepository {
    */
   createLike = async (userId, likeUserId) => {
     try {
-      const people = await Like.create({
+      //없는 사용자를 평가하려고하면 constraint에 의해 쿼리문에서 자동으로 에러 호출.
+      const people = await LikeAndDislike.create({
         userId: userId,
-        likeUserId: likeUserId,
+        targetUserId: likeUserId,
+        isLike: true,
       });
+
       return people;
     } catch (err) {
       console.error(err);
@@ -95,9 +124,10 @@ module.exports = class PeopleRepository {
    */
   createDislike = async (userId, dislikeUserId) => {
     try {
-      const people = await Dislike.create({
+      const people = await LikeAndDislike.create({
         userId: userId,
-        dislikeUserId: dislikeUserId,
+        targetUserId: dislikeUserId,
+        isLike: false,
       });
       return people;
     } catch (err) {
@@ -108,26 +138,26 @@ module.exports = class PeopleRepository {
   getLikePeople = async (userId) => {
     try {
       //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
-      const people = await Like.findAll({
+      const people = await LikeAndDislike.findAll({
         where: {
-          userId,
+          userId: userId,
+          isLike: true,
         },
-        attributes: ["likeUserId"],
+        attributes: ["targetUserId"],
 
         raw: true,
       });
 
       let userList = [];
 
+      //내가 좋아요 누른 그사람들도 날 좋아하는지
       for (let i in people) {
-        const likeUserId = people[i].likeUserId;
+        const likeUserId = people[i].targetUserId;
         const userInfo = await User.findOne({
           where: { userId: likeUserId },
           raw: true,
         });
-        const isLikeMe = await Like.findOne({
-          where: { userId: likeUserId, likeUserId: userId },
-        });
+        const isLikeMe = await this.getIsLikeMe(userId, likeUserId);
         //userList.push(userInfo);
         userList[i] = {
           userId: userInfo.userId,
@@ -138,7 +168,9 @@ module.exports = class PeopleRepository {
           gender: userInfo.gender ? true : false,
           imageUrl: userInfo.imageUrl,
           interest: userInfo.interest.split(""),
-          likeMe: isLikeMe ? true : false,
+          likeMe: isLikeMe.isLikeMe,
+          x: userInfo.x,
+          y: userInfo.y,
         };
       }
       console.log(userList);

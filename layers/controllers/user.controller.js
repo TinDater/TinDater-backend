@@ -7,11 +7,12 @@ class UserController {
   getMypage = async (req, res, next) => {
     const { userId } = req.params;
     const getMypageData = await this.userService.getMypage(userId);
-
-    if (getMypageData) {
-      return res.status(200).json({ data: getMypageData });
+    if (getMypageData.success !== false) {
+      return res.status(200).json({ success: true, data: getMypageData });
     } else {
-      return res.status(getMypageData.status).json(getMypageData.message);
+      return res
+        .status(getMypageData.status)
+        .json({ success: false, msg: getMypageData.msg });
     }
   };
 
@@ -43,7 +44,7 @@ class UserController {
     )
       return res
         .status(400)
-        .json({ errorMessage: "데이터 형식을 확인해주세요." });
+        .json({ success: false, msg: "데이터 형식을 확인해주세요." });
 
     //비밀번호 일치 확인
     if (password !== confirm) {
@@ -53,8 +54,7 @@ class UserController {
       });
       return;
     }
-    console.log(email, "con");
-    console.log(nickname, "con2nick");
+
     const updateMypageData = await this.userService.updateMypage(
       userId,
       password,
@@ -69,20 +69,16 @@ class UserController {
     );
 
     //success is true
+    console.log("--", updateMypageData.success);
     if (updateMypageData.success) {
-      return res.status(200).json({ msg: "업데이트가 성공하였습니다." });
+      return res
+        .status(200)
+        .json({ sucess: true, msg: "업데이트가 성공하였습니다." });
     } else {
-      console.log(updateMypageData);
-      return res.status(updateMypageData.status).json(updateMypageData.message);
+      return res
+        .status(updateMypageData.status)
+        .send({ success: false, msg: updateMypageData.msg });
     }
-  };
-
-  //내가 좋아요한 사람//user->people로 바꾸기
-  peopleIlike = async (req, res, next) => {
-    const { userId } = req.params;
-    const peopleIlikeData = await this.userService.peopleIlike(userId);
-
-    res.status(200).json({ data: peopleIlikeData });
   };
 }
 
