@@ -21,7 +21,7 @@ router.post("/email", authController.checkDupEmail);
 // 닉네임 중복 확인
 router.post("/nickname", authController.checkDupNickname);
 
-// 로그인 유지
+// 토큰 체크
 router.get("", authMiddleware, authController.checkToken);
 
 // 로그아웃
