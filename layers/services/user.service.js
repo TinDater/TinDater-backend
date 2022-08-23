@@ -8,7 +8,6 @@ class UserService {
   getMypage = async (userId) => {
     const getMypageData = await this.userRepository.getMypage(userId);
     let result;
-    console.log("service", getMypageData);
     if (!getMypageData) {
       return {
         success: false,
@@ -25,6 +24,8 @@ class UserService {
         gender: getMypageData.gender,
         imageUrl: getMypageData.imageUrl,
         interest: getMypageData.interest.split(""),
+        x: getMypageData.x,
+        y: getMypageData.y,
         likeMe: getMypageData.likeMe,
       };
     }
