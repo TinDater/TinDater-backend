@@ -67,6 +67,7 @@ module.exports = class PeopleRepository {
       const people = await User.findOne({
         where: { userId: recommended },
       });
+      console.log(people);
       const isLikeMe = await this.getIsLikeMe(userId, recommended);
       if (isLikeMe.success === true)
         return {

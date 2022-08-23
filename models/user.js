@@ -44,6 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.BOOLEAN,
       imageUrl: DataTypes.STRING,
       interest: DataTypes.STRING,
+      x: DataTypes.FLOAT,
+      y: DataTypes.FLOAT,
     },
     {
       sequelize,
