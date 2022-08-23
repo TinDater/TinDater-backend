@@ -8,8 +8,8 @@ const peopleController = new PeopleController();
 //내가 좋아요한 사람
 peopleRouter.get("/like", peopleController.likePeople);
 
-//스와이프 페이지
-peopleRouter.get("/:userId", peopleController.getSwipe);
+//추천받기 첫페이지
+peopleRouter.get("/:userId", peopleController.getRecommend);
 
 peopleRouter
   .route("/:userId/like")

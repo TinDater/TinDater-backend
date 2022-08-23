@@ -1,25 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Like extends Model {
+  class LikeAndDislike extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Like.belongsTo(
-      //   models.User
-      //   , {
-      //   foreignKey: "userId",
-      //   targetKey: "userId",
-      //   onUpdate: "cascade",
-      //   onDelete: "cascade",
-      // }
-      //);
+      // define association here
     }
   }
-  Like.init(
+  LikeAndDislike.init(
     {
       likeId: {
         allowNull: false,
@@ -27,22 +19,30 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      likeUserId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      targetUserId: DataTypes.INTEGER,
+      isLike: DataTypes.BOOLEAN,
     },
     {
       sequelize,
-      modelName: "Like",
+      modelName: "LikeAndDislike",
     }
   );
-
-  Like.associate = function (models) {
-    Like.belongsTo(models.User, {
+  LikeAndDislike.associate = function (models) {
+    LikeAndDislike.belongsTo(models.User, {
       foreignKey: "userId",
       targetKey: "userId",
       onUpdate: "cascade",
       onDelete: "cascade",
       constraints: false,
     });
+    LikeAndDislike.belongsTo(models.User, {
+      foreignKey: "targetUserId",
+      targetKey: "userId",
+      onUpdate: "cascade",
+      onDelete: "cascade",
+      constraints: false,
+    });
   };
-  return Like;
+  return LikeAndDislike;
 };
