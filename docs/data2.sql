@@ -52,31 +52,31 @@ VALUES ("test9@test.com", "a2dd48ed23d298cd868be56fb2897bad8bfd0a181acfa0effb650
 INSERT INTO Users(email, password, nickname, age, address, gender, imageUrl, interest)
 VALUES ("test10@test.com", "a2dd48ed23d298cd868be56fb2897bad8bfd0a181acfa0effb650c1a597adef987acee4c6c6df601272d8017fef3a34da76a37a0f99a8ebb7ec0df843a1c9368", "이민석", 40, "서울", true, "zzz", '11100');
 
-INSERT INTO Likes(userId, likeUserId)
-VALUES (1, 4);
-INSERT INTO Likes(userId, likeUserId)
-VALUES (1, 9);
-INSERT INTO Likes(userId, likeUserId)
-VALUES (2, 1);
-INSERT INTO Likes(userId, likeUserId)
-VALUES (2, 7);
-INSERT INTO Likes(userId, likeUserId)
-VALUES (3, 4);
-INSERT INTO Likes(userId, likeUserId)
-VALUES (3, 9);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (1, 3);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (1, 10);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (2, 6);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (3, 1);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (4, 5);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (5, 1);
-INSERT INTO Dislikes(userId, dislikeUserId)
-VALUES (9, 1);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (1, 4, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (1, 9, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (2, 1, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (2, 7, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (3, 4, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (3, 9, true);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (1, 3, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (1, 10, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (2, 6, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (3, 1, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (4, 5, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (5, 1, false);
+INSERT INTO LikeAndDislikes(userId, targetUserId, isLike)
+VALUES (9, 1, false);
 
 
