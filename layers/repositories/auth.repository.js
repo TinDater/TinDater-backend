@@ -29,32 +29,33 @@ module.exports = class Authrepository {
     return createUserData;
   };
 
-  loginUser = async (email, password, nickname, userId) => {
-    const loginUserData = await User.findAll({
-      where: { email, password },
+  //로그인시 입력한 email, password 값으로 nickname과 userdata 반환
+  loginUser = async (email, password) => {
+    const loginUserData = await User.findOne({
+      where: { email },
       raw: true,
     });
 
-    if (!loginUserData) {
-      res.status(400).send({
-        errorMessage: "이메일 또는 비밀번호를 확인해주세요.",
-      });
-      return loginUserData;
-    }
+    // const loginNicknameData = loginUserData.map((row) => row.nickname); //닉네임만 뽑아온다.
+    const loginNicknameData = loginUserData.nickname;
+    const loginUserIdData = loginUserData.userId;
+    const loginEmailData = loginUserData.email;
+    const loginData = {
+      loginNicknameData,
+      loginEmailData,
+      loginUserIdData,
+    }; //해당 유저의 모든 정보
 
-    const loginNicknameData = loginUserData.map((row) => row.nickname);
-    const loginData = { loginNicknameData, loginUserData };
+    return loginData;
+  };
 
-    console.log("repo logindata", loginData);
-
-    if (!loginData) {
-      return {
-        status: 400,
-        msg: "이메일 또는 비밀번호가 잘못됐습니다.",
-      };
-    } else {
-      return loginData;
-    }
+  //email, nickname 값 받아서 등록 안된 닉네임일 경우 에러
+  isExistUser = async (email) => {
+    const isExistUserData = await User.findOne({
+      where: { email },
+      raw: true,
+    });
+    return isExistUserData;
   };
 
   //유저 아이디로 해당 유저의 row 반환.

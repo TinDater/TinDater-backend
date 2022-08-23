@@ -119,53 +119,85 @@ module.exports = class AuthService {
   };
 
   //로그인
-  login = async (email, password, nickname, userId) => {
+  login = async (email, password) => {
+    const isExistUserData = await this.authRepository.isExistUser(email);
+
+    if (!isExistUserData)
+      return {
+        status: 400,
+        msg: "이메일을 확인해주세요. ",
+        success: false,
+      };
+    console.log(isExistUserData);
+
     const hashPassword = crypto
       .createHash("sha512")
       .update(password)
       .digest("hex");
-
-    if (!hashPassword) {
-      return {
-        status: 400,
-        sucess: false,
-        msg: "이메일 또는 비밀번호를 확인해주세요",
-      };
-    }
-
-    console.log("service 해시password", hashPassword);
-
-    const userData = await this.authRepository.loginUser(
-      email,
-      hashPassword,
-      //   password,
-      nickname,
-      userId
-    );
-    console.log("service userDatav", userData);
+      
     const token = jwt.sign(
       {
-        userId: userData.loginUserData[0].userId,
-        // userId: userData.userId,
-        nickname: userData.loginNicknameData[0],
+        userId: isExistUserData.userId, //userData.loginUserIdData,
+        nickname: isExistUserData.nickname, // loginUserIdData[0].nickname,
       },
-
       env.ACCESS_SECRET,
       { expiresIn: env.ACCESS_OPTION_EXPIRESIN }
     );
 
-    console.log("service token", token);
-    console.log("service userdata", userData);
-
-    return {
-      msg: "로그인 되었습니다.",
-      status: 200,
-      success: true,
-      token,
-      userId: userData.loginUserData[0].userId,
-      nickname: userData.loginNicknameData,
-    };
+    if (hashPassword === isExistUserData.password) {
+      return {
+        msg: "로그인 되었습니다.",
+        status: 200,
+        success: true,
+        token,
+        userId: isExistUserData.userId, //userData.loginUserIdData,
+        nickname: isExistUserData.nickname, // userData.loginNicknameData,
+      };
+    } else {
+      return {
+        status: 400,
+        sucess: false,
+        msg: "비밀번호가 틀렸습니다. ",
+      };
+    }
   };
+
+  // const userData = await this.authRepository.loginUser(email, hashPassword);
+  // console.log(userData);
+
+  //     if (userData.loginEmailData !== email || !hashPassword) {
+  //       return {
+  //         status: 400,
+  //         sucess: false,
+  //         msg: "이메일이 틀렸습니다. ",
+  //       };
+  //     } else if (!hashPassword) {
+  //       return {
+  //         status: 400,
+  //         sucess: false,
+  //         msg: "비밀번호가 틀렸습니다. ",
+  //       };
+  //     } else {
+  //       return {
+  //         msg: "로그인 되었습니다.",
+  //         status: 200,
+  //         success: true,
+  //         token,
+  //         userId: userData.loginUserIdData,
+  //         nickname: userData.loginNicknameData,
+  //       };
+  //     }
+  //   };
+  // const checkDupEmailData = await this.authRepository.checkDupEmail(email)
+  // if (checkDupEmailData) {
+  //   return { msg: "이미 존재하는 이메일입니다. ", success: false };
+  // }
+  // const checkDupNicknameData = await this.authRepository.checkDupNickname(
+  //   nickname
+  // );
+  // if (!checkDupNicknameData) {
+  //   return { msg: "존재하지 않는 닉네임입니다.", success: false };
+  // }
 
   //이메일 유효성 검사
   checkEmailEffectiveness = async (email) => {
