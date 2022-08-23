@@ -69,7 +69,6 @@ class UserController {
     );
 
     //success is true
-    console.log("--", updateMypageData.success);
     if (updateMypageData.success) {
       return res
         .status(200)
@@ -78,6 +77,24 @@ class UserController {
       return res
         .status(updateMypageData.status)
         .send({ success: false, msg: updateMypageData.msg });
+    }
+  };
+
+  //유저 위치 정보 업데이트
+  updateCoord = async (req, res, next) => {
+    const { userId } = req.params;
+    const { x, y } = req.body;
+
+    const updateCoordData = await this.userService.updateCoord(userId, x, y);
+    console.log(updateCoordData);
+    if (updateCoordData.success === true) {
+      return res
+        .status(200)
+        .json({ sucess: true, msg: "업데이트가 성공하였습니다." });
+    } else {
+      return res
+        .status(updateCoordData.status)
+        .send({ success: false, msg: updateCoordData.msg });
     }
   };
 }
