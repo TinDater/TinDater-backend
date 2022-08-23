@@ -35,15 +35,16 @@ module.exports = class Authrepository {
       where: { email },
       raw: true,
     });
-
     // const loginNicknameData = loginUserData.map((row) => row.nickname); //닉네임만 뽑아온다.
     const loginNicknameData = loginUserData.nickname;
     const loginUserIdData = loginUserData.userId;
     const loginEmailData = loginUserData.email;
+    const loginUserImageUrl = loginUserData.imageUrl;
     const loginData = {
       loginNicknameData,
       loginEmailData,
       loginUserIdData,
+      loginUserImageUrl,
     }; //해당 유저의 모든 정보
 
     return loginData;
@@ -55,6 +56,7 @@ module.exports = class Authrepository {
       where: { email },
       raw: true,
     });
+    console.log(isExistUserData);
     return isExistUserData;
   };
 

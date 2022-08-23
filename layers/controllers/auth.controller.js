@@ -103,7 +103,7 @@ module.exports = class AuthController {
   //로그인
   login = async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const { email, password, x, y } = req.body;
       // const isExistUser = await this.authService.login(email, password);
       const loginData = await this.authService.login(email, password);
 
@@ -115,6 +115,7 @@ module.exports = class AuthController {
             token: loginData.token,
             userId: loginData.userId,
             nickname: loginData.nickname,
+            imageUrl: loginData.imageUrl,
           },
         });
       } else {
