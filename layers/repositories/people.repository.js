@@ -41,7 +41,7 @@ module.exports = class PeopleRepository {
   };
 
   /**
-   *
+   *상대가 나를 좋아하는 지 체크, recommended가 상대.
    * @param {*} userId
    * @param {*} recommended
    * @returns
@@ -139,38 +139,57 @@ module.exports = class PeopleRepository {
     try {
       const people = await LikeAndDislike.findAll({
         where: { userId, isLike: true },
-        //as: "subjectUser",
         attributes: [],
         include: [
           {
             model: User,
             as: "objectUser",
-            // include: [
-            //   {
-            //     model: LikeAndDislike,
-            //     as: "subjectUser",
-            //     on: { targetuserId: userId, isLike: true },
-            //   },
-            // ],
           },
         ],
         raw: true,
       });
 
-      const result = people.map((v) => {
-        return {
-          userId: v["objectUser.userId"],
-          email: v["objectUser.email"],
-          nickname: v["objectUser.nickname"],
-          age: v["objectUser.age"],
-          address: v["objectUser.address"],
-          gender: v["objectUser.gender"],
-          imageUrl: v["objectUser.imageUrl"],
-          interest: v["objectUser.interest"].split(""),
-          x: v["objectUser.x"],
-          y: v["objectUser.y"],
-        };
-      });
+      // const result = [];
+      // for (let i in people) {
+      //   result[i] = {
+      //     userId: people[i]["objectUser.userId"],
+      //     email: people[i]["objectUser.email"],
+      //     nickname: people[i]["objectUser.nickname"],
+      //     age: people[i]["objectUser.age"],
+      //     address: people[i]["objectUser.address"],
+      //     gender: people[i]["objectUser.gender"],
+      //     imageUrl: people[i]["objectUser.imageUrl"],
+      //     interest: people[i]["objectUser.interest"].split(""),
+      //     x: people[i]["objectUser.x"],
+      //     y: people[i]["objectUser.y"],
+      //     likeMe: await this.getIsLikeMe(userId, people[i]["objectUser.userId"])
+      //       .isLikeMe,
+      //   };
+      //   console.log(
+      //     typeof (await this.getIsLikeMe(userId, people[i]["objectUser.userId"])
+      //       .isLikeMe)
+      //   );
+      // }
+
+      const result = await Promise.all(
+        people.map(async (v) => {
+          const likeMe = await this.getIsLikeMe(userId, v["objectUser.userId"]);
+          //console.log(userId, v["objectUser.userId"], likeMe);
+          return {
+            userId: v["objectUser.userId"],
+            email: v["objectUser.email"],
+            nickname: v["objectUser.nickname"],
+            age: v["objectUser.age"],
+            address: v["objectUser.address"],
+            gender: v["objectUser.gender"],
+            imageUrl: v["objectUser.imageUrl"],
+            interest: v["objectUser.interest"].split(""),
+            x: v["objectUser.x"],
+            y: v["objectUser.y"],
+            likeMe: likeMe.isLikeMe,
+          };
+        })
+      );
       //console.log(result);
       // //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
       // const people = await LikeAndDislike.findAll({
