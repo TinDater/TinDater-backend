@@ -1,2 +1,4 @@
 node_modules/
 .env
+docs/data.sql
+docs/data2.sql

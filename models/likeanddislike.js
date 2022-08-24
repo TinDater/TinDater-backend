@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "cascade",
       onDelete: "cascade",
       constraints: false,
+      as: "subjectUser",
     });
     LikeAndDislike.belongsTo(models.User, {
       foreignKey: "targetUserId",
@@ -42,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "cascade",
       onDelete: "cascade",
       constraints: false,
+      as: "objectUser",
     });
   };
   return LikeAndDislike;

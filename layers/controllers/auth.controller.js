@@ -106,20 +106,25 @@ module.exports = class AuthController {
       const { email, password, x, y } = req.body;
       // const isExistUser = await this.authService.login(email, password);
       const loginData = await this.authService.login(email, password);
-
+      //console.log(loginData);
       if (loginData.success == true) {
-        return res.status(loginData.status).send({
+        return res.status(loginData.status).json({
+          success: loginData.success,
           msg: loginData.msg,
           data: {
-            success: loginData.success,
             token: loginData.token,
             userId: loginData.userId,
+            email: loginData.email,
+            age: loginData.age,
+            address: loginData.address,
+            gender: loginData.gender,
+            interest: loginData.interest.split(""),
             nickname: loginData.nickname,
             imageUrl: loginData.imageUrl,
           },
         });
       } else {
-        return res.status(loginData.status).send({
+        return res.status(loginData.status).json({
           success: loginData.success,
           msg: loginData.msg,
         });
@@ -133,6 +138,22 @@ module.exports = class AuthController {
     } catch (err) {
       console.log(err);
       return { success: false, msg: err.message };
+    }
+  };
+  checkToken = async (req, res, next) => {
+    const { userId, nickname } = res.locals;
+    try {
+      if (!nickname)
+        return res.status(400).json({ success: false, nickname: "" });
+
+      const { imageUrl } = await this.authService.getImageUrl(userId);
+
+      return res
+        .status(200)
+        .json({ success: true, userId, nickname, imageUrl });
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ success: false, msg: err.message });
     }
   };
 };

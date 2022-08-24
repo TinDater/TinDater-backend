@@ -32,32 +32,17 @@ module.exports = class UserRepository {
   };
 
   //마이 페이지 수정
-  updateMypage = async (
-    userId,
-    email,
-    hashPassword,
-    nickname,
-    age,
-    address,
-    gender,
-    imageUrl,
-    interest
-  ) => {
+  updateMypage = async (userData) => {
+    userData.interest = userData.interest.join("");
+
     const updateMypageData = await User.update(
       {
-        email: email,
-        password: hashPassword,
-        nickname: nickname,
-        age: age,
-        address: address,
-        gender: gender,
-        imageUrl: imageUrl,
-        interest: interest.join(""),
+        ...userData,
       },
       {
         raw: true,
         where: {
-          userId,
+          userId: userData.userId,
         },
       }
     );

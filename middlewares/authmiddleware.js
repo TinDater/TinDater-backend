@@ -8,21 +8,25 @@ module.exports = async (req, res, next) => {
   const { authorization } = req.headers;
   const [Type, token] = (authorization || "").split(" ");
 
-  if (!token || Type !== "Bearer") {
-    res.send({
-      errorMessage: "로그인 후 사용하세요",
-    });
-    return;
+  try {
+    if (!token || Type !== "Bearer") {
+      return res.status(400).json({
+        success: false,
+        nickname: "",
+        msg: "로그인 후 사용하세요.",
+      });
+    }
+
+    const tokenvoll = jwt.verify(token, env.ACCESS_SECRET);
+    res.locals.userId = tokenvoll.userId;
+
+    const userData = await authRepository.returnUserStatus(tokenvoll.userId);
+    res.locals.nickname = userData.nickname;
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ success: false, nickname: "", msg: err.message });
   }
 
-  const tokenvoll = jwt.verify(token, env.SECRET_KEY);
-  res.locals.userId = tokenvoll.userId;
-  console.log(res.locals.userId);
-
-  const userData = await authRepository.returnUserStatus(tokenvoll.userId);
-  res.locals.nickname = userData.nickname;
-
-  console.log(userId, userData, nickname);
-
-  // next();
+  next();
 };

@@ -11,6 +11,15 @@ const env = process.env;
 module.exports = class AuthService {
   authRepository = new AuthRepository();
 
+  getImageUrl = async (userId) => {
+    try {
+      const { imageUrl } = await this.authRepository.getImageUrl(userId);
+      return { success: true, imageUrl };
+    } catch (err) {
+      console.log(err);
+      return { success: false, msg: err.message };
+    }
+  };
   //회원가입 : email, password,,, 유저 데이터베이스에 추가
   createUser = async (
     email,
@@ -134,7 +143,7 @@ module.exports = class AuthService {
       .createHash("sha512")
       .update(password)
       .digest("hex");
-      
+
     const token = jwt.sign(
       {
         userId: isExistUserData.userId, //userData.loginUserIdData,
@@ -152,6 +161,11 @@ module.exports = class AuthService {
         token,
         userId: isExistUserData.userId, //userData.loginUserIdData,
         nickname: isExistUserData.nickname, // userData.loginNicknameData,
+        email: isExistUserData.email,
+        age: isExistUserData.age,
+        address: isExistUserData.address,
+        gender: isExistUserData.gender,
+        interest: isExistUserData.interest,
         imageUrl: isExistUserData.imageUrl,
       };
     } else {
