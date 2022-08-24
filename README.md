@@ -4,9 +4,11 @@
 
 ## 프로젝트 팀원
 
-- @codeing999
-- @Minsun91
-- @Jiwonemil
+- @codeing999 : 친구 추천/좋아요/싫어요 기능
+- @Minsun91 : 회원가입/로그인 기능
+- @Jiwonemil : 마이페이지 기능
+
+API 명세
 
 ## [API 명세](doc/API.md)
 
