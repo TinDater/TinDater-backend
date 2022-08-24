@@ -1,6 +1,8 @@
-const UserRepository = require("../repositories/user.repository");
 const Joi = require("joi");
 const crypto = require("crypto");
+
+const UserRepository = require("../repositories/user.repository");
+
 class UserService {
   userRepository = new UserRepository();
 
