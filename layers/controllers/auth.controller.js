@@ -106,20 +106,25 @@ module.exports = class AuthController {
       const { email, password, x, y } = req.body;
       // const isExistUser = await this.authService.login(email, password);
       const loginData = await this.authService.login(email, password);
-
+      //console.log(loginData);
       if (loginData.success == true) {
-        return res.status(loginData.status).send({
+        return res.status(loginData.status).json({
+          success: loginData.success,
           msg: loginData.msg,
           data: {
-            success: loginData.success,
             token: loginData.token,
             userId: loginData.userId,
+            email: loginData.email,
+            age: loginData.age,
+            address: loginData.address,
+            gender: loginData.gender,
+            interest: loginData.interest.split(""),
             nickname: loginData.nickname,
             imageUrl: loginData.imageUrl,
           },
         });
       } else {
-        return res.status(loginData.status).send({
+        return res.status(loginData.status).json({
           success: loginData.success,
           msg: loginData.msg,
         });

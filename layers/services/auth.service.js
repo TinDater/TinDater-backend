@@ -134,7 +134,7 @@ module.exports = class AuthService {
       .createHash("sha512")
       .update(password)
       .digest("hex");
-      
+
     const token = jwt.sign(
       {
         userId: isExistUserData.userId, //userData.loginUserIdData,
@@ -152,6 +152,11 @@ module.exports = class AuthService {
         token,
         userId: isExistUserData.userId, //userData.loginUserIdData,
         nickname: isExistUserData.nickname, // userData.loginNicknameData,
+        email: isExistUserData.email,
+        age: isExistUserData.age,
+        address: isExistUserData.address,
+        gender: isExistUserData.gender,
+        interest: isExistUserData.interest,
         imageUrl: isExistUserData.imageUrl,
       };
     } else {
