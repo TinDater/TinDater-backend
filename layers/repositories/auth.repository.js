@@ -2,6 +2,13 @@ const { condition } = require("sequelize");
 const { User, Dislike, Like } = require("../../models");
 
 module.exports = class Authrepository {
+  getImageUrl = async (userId) => {
+    return User.findOne({
+      where: userId,
+      attributes: ["imageUrl"],
+    });
+  };
+
   //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
   createUser = async (
     email,

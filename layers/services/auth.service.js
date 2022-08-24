@@ -11,6 +11,15 @@ const env = process.env;
 module.exports = class AuthService {
   authRepository = new AuthRepository();
 
+  getImageUrl = async (userId) => {
+    try {
+      const imageUrl = await this.authRepository.getImageUrl(userId);
+      return { success: true, imageUrl };
+    } catch (err) {
+      console.log(err);
+      return { success: false, msg: err.message };
+    }
+  };
   //회원가입 : email, password,,, 유저 데이터베이스에 추가
   createUser = async (
     email,

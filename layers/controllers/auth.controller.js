@@ -143,8 +143,14 @@ module.exports = class AuthController {
   checkToken = async (req, res, next) => {
     const { userId, nickname } = res.locals;
     try {
-      if (nickname) return res.status(200).json({ success: true, nickname });
-      else return res.status(400).json({ success: false, nickname: "" });
+      if (!nickname)
+        return res.status(400).json({ success: false, nickname: "" });
+
+      const imageUrl = await this.authService.getImageUrl(userId);
+
+      return res
+        .status(200)
+        .json({ success: true, userId, nickname, imageUrl });
     } catch (err) {
       console.log(err);
       return res.status(400).json({ success: false, msg: err.message });
