@@ -146,7 +146,7 @@ module.exports = class AuthController {
       if (!nickname)
         return res.status(400).json({ success: false, nickname: "" });
 
-      const imageUrl = await this.authService.getImageUrl(userId);
+      const { imageUrl } = await this.authService.getImageUrl(userId);
 
       return res
         .status(200)
