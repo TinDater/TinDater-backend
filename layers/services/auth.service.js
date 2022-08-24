@@ -13,7 +13,7 @@ module.exports = class AuthService {
 
   getImageUrl = async (userId) => {
     try {
-      const imageUrl = await this.authRepository.getImageUrl(userId);
+      const { imageUrl } = await this.authRepository.getImageUrl(userId);
       return { success: true, imageUrl };
     } catch (err) {
       console.log(err);
