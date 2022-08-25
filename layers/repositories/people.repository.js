@@ -149,28 +149,6 @@ module.exports = class PeopleRepository {
         raw: true,
       });
 
-      // const result = [];
-      // for (let i in people) {
-      //   result[i] = {
-      //     userId: people[i]["objectUser.userId"],
-      //     email: people[i]["objectUser.email"],
-      //     nickname: people[i]["objectUser.nickname"],
-      //     age: people[i]["objectUser.age"],
-      //     address: people[i]["objectUser.address"],
-      //     gender: people[i]["objectUser.gender"],
-      //     imageUrl: people[i]["objectUser.imageUrl"],
-      //     interest: people[i]["objectUser.interest"].split(""),
-      //     x: people[i]["objectUser.x"],
-      //     y: people[i]["objectUser.y"],
-      //     likeMe: await this.getIsLikeMe(userId, people[i]["objectUser.userId"])
-      //       .isLikeMe,
-      //   };
-      //   console.log(
-      //     typeof (await this.getIsLikeMe(userId, people[i]["objectUser.userId"])
-      //       .isLikeMe)
-      //   );
-      // }
-
       const result = await Promise.all(
         people.map(async (v) => {
           const likeMe = await this.getIsLikeMe(userId, v["objectUser.userId"]);
@@ -190,43 +168,6 @@ module.exports = class PeopleRepository {
           };
         })
       );
-      //console.log(result);
-      // //로그인한 유저의 userId가 좋아요한 likeUserId의 배열
-      // const people = await LikeAndDislike.findAll({
-      //   where: {
-      //     userId: userId,
-      //     isLike: true,
-      //   },
-      //   attributes: ["targetUserId"],
-
-      //   raw: true,
-      // });
-
-      // let userList = [];
-
-      // //내가 좋아요 누른 그사람들도 날 좋아하는지
-      // for (let i in people) {
-      //   const likeUserId = people[i].targetUserId;
-      //   const userInfo = await User.findOne({
-      //     where: { userId: likeUserId },
-      //     raw: true,
-      //   });
-      //   const isLikeMe = await this.getIsLikeMe(userId, likeUserId);
-      //   //userList.push(userInfo);
-      //   userList[i] = {
-      //     userId: userInfo.userId,
-      //     email: userInfo.email,
-      //     nickname: userInfo.nickname,
-      //     age: userInfo.age,
-      //     address: userInfo.address,
-      //     gender: userInfo.gender ? true : false,
-      //     imageUrl: userInfo.imageUrl,
-      //     interest: userInfo.interest.split(""),
-      //     likeMe: isLikeMe.isLikeMe,
-      //     x: userInfo.x,
-      //     y: userInfo.y,
-      //   };
-      // }
 
       return result;
     } catch (err) {
