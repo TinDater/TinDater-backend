@@ -16,6 +16,24 @@
 
 ## [ERD](./docs/ERD.md)
 
+## Directory Structure
+```cmd
+root
+├─config
+├─docs
+├─layers
+│  ├─controllers
+│  ├─repositories
+│  ├─routers
+│  └─services
+├─middlewares
+├─migrations
+├─models
+├─modules
+├─node_modules
+└─seeders
+```
+
 ## Package
 
 ```json
