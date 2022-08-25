@@ -3,6 +3,10 @@
 
 - Tinder 클론코딩 협업 프로젝트
 
+## [API 명세](./docs/API.md)
+
+## [ERD](./docs/ERD.md)
+
 ## 프로젝트 팀원
 
 - [codeing999](https://github.com/codeing999) : 친구 추천/좋아요/싫어요 기능
@@ -10,11 +14,6 @@
 - [Jiwonemil](https://github.com/Jiwonemil) : 마이페이지 기능
 
 ![image](https://user-images.githubusercontent.com/109027875/186547577-aa215236-dd77-4311-be32-4e2a460ccc96.png)
-
-
-## [API 명세](./docs/API.md)
-
-## [ERD](./docs/ERD.md)
 
 ## Directory Structure
 ```cmd
@@ -34,7 +33,7 @@ root
 └─seeders
 ```
 
-## Package
+## Packages
 
 ```json
 {
