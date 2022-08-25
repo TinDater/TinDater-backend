@@ -9,6 +9,9 @@
 - [Minsun91](https://github.com/Minsun91) : 회원가입/로그인 기능
 - [Jiwonemil](https://github.com/Jiwonemil) : 마이페이지 기능
 
+![image](https://user-images.githubusercontent.com/109027875/186547292-f2e350da-9008-4749-9bfe-527a9a8db415.png)
+
+
 ## [API 명세](./docs/API.md)
 
 ## [ERD](./docs/ERD.md)
