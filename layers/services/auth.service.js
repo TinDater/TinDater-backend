@@ -177,43 +177,6 @@ module.exports = class AuthService {
     }
   };
 
-  // const userData = await this.authRepository.loginUser(email, hashPassword);
-  // console.log(userData);
-
-  //     if (userData.loginEmailData !== email || !hashPassword) {
-  //       return {
-  //         status: 400,
-  //         sucess: false,
-  //         msg: "이메일이 틀렸습니다. ",
-  //       };
-  //     } else if (!hashPassword) {
-  //       return {
-  //         status: 400,
-  //         sucess: false,
-  //         msg: "비밀번호가 틀렸습니다. ",
-  //       };
-  //     } else {
-  //       return {
-  //         msg: "로그인 되었습니다.",
-  //         status: 200,
-  //         success: true,
-  //         token,
-  //         userId: userData.loginUserIdData,
-  //         nickname: userData.loginNicknameData,
-  //       };
-  //     }
-  //   };
-  // const checkDupEmailData = await this.authRepository.checkDupEmail(email)
-  // if (checkDupEmailData) {
-  //   return { msg: "이미 존재하는 이메일입니다. ", success: false };
-  // }
-  // const checkDupNicknameData = await this.authRepository.checkDupNickname(
-  //   nickname
-  // );
-  // if (!checkDupNicknameData) {
-  //   return { msg: "존재하지 않는 닉네임입니다.", success: false };
-  // }
-
   //이메일 유효성 검사
   checkEmailEffectiveness = async (email) => {
     const schema = Joi.object().keys({

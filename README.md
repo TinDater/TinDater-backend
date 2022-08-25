@@ -36,8 +36,8 @@ root
 ## Packages
 
 ```json
-{
   "dependencies": {
+    "aws-sdk": "^2.1201.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
@@ -48,8 +48,10 @@ root
     "nodemon": "^2.0.19",
     "sequelize": "^6.21.4",
     "sequelize-cli": "^6.4.1"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3"
   }
-}
 ```
 
 

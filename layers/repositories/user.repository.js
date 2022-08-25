@@ -33,7 +33,7 @@ module.exports = class UserRepository {
 
   //마이 페이지 수정
   updateMypage = async (userData) => {
-    userData.interest = userData.interest.join("");
+    if (userData.interest) userData.interest = userData.interest.join("");
 
     const updateMypageData = await User.update(
       {
