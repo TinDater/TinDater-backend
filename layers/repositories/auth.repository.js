@@ -101,33 +101,4 @@ module.exports = class Authrepository {
     });
     return findPassword;
   };
-
-  //userId로 유저를 찾아 그 유저의 정보 변경.
-  // updateUserProfile = async (userId, password, nickname) => {
-  //   const updataUserProfileData = await User.update(
-  //     {
-  //       password,
-  //       nickname,
-  //       imageUrl,
-  //     },
-  //     { where: { userId } }
-  //   );
-  //   return updataUserProfileData;
-  // };
-
-  //userId로 해당 유저를 삭제.
-  // deleteUser = async (userId) => {
-  //   await User.delete({
-  //     where: { userId },
-  //   });
-  //   return { success: true };
-  // };
-  // returnUserLikeOrNot = async (userId, postId) => {
-  //   const data = await Like.findOne({
-  //     where: { userId, postId },
-  //   });
-  //   return data;
-  // };
 };
-
-// module.exports = Authrepository;
