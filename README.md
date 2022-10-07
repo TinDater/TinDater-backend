@@ -1,5 +1,7 @@
 # Tindater
 
+- 시연영상 링크
+[![틴데이터 시연영상](https://i.ytimg.com/vi/C5cSWuhuU1I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBFIRVeH3Nu4oN24rXpnjTV_84VYA)](https://youtu.be/C5cSWuhuU1I)
 
 - Tinder 클론코딩 협업 프로젝트
 
