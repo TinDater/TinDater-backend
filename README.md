@@ -1,20 +1,20 @@
 # Tindater
 
-- 시연영상 링크
+- Service Demostration 
 
 [![틴데이터 시연영상](https://i.ytimg.com/vi/C5cSWuhuU1I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBFIRVeH3Nu4oN24rXpnjTV_84VYA)](https://youtu.be/C5cSWuhuU1I)
 
-- Tinder 클론코딩 협업 프로젝트
+- Tinder Clone coding team projects
 
-## [API 명세](./docs/API.md)
+## [API](./docs/API.md)
 
 ## [ERD](./docs/ERD.md)
 
-## 프로젝트 팀원
+## Team members
 
-- [codeing999](https://github.com/codeing999) : 친구 추천/좋아요/싫어요 기능
-- [Minsun91](https://github.com/Minsun91) : 회원가입/로그인 기능
-- [Jiwonemil](https://github.com/Jiwonemil) : 마이페이지 기능
+- [codeing999](https://github.com/codeing999) : Friend recommend/Like/Dislike function
+- [Minsun91](https://github.com/Minsun91) : Register/Login function 
+- [Jiwonemil](https://github.com/Jiwonemil) : Mypage function
 
 ![image](https://user-images.githubusercontent.com/109027875/186547577-aa215236-dd77-4311-be32-4e2a460ccc96.png)
 
